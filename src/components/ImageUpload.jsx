@@ -1,106 +1,110 @@
-import { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { UploadCloud, Image as ImageIcon, X, Loader2 } from 'lucide-react';
-import api from '../api';
 
-const ImageUpload = ({ onUpload, previewUrl, label, className = "", height = "h-64", onRemove }) => {
-    const [uploading, setUploading] = useState(false);
-    const [uploadError, setUploadError] = useState(null);
+"use client"
 
-    // Upload image to Cloudinary via server
-    const uploadImage = async (file) => {
-        const formData = new FormData();
-        formData.append('image', file);
+import { useState } from "react"
+import api from "../api"
+import { X, ImageIcon } from "lucide-react"
 
-        try {
-            const response = await api.post('/upload/image', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            return response.data.url || response.data.secureUrl;
-        } catch (error) {
-            console.error('Upload failed:', error);
-            throw new Error(error.response?.data?.message || 'Failed to upload image');
-        }
-    };
+const ImageUpload = ({ label, previewUrl, onUpload, onRemove }) => {
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState("")
 
-    const onDrop = useCallback(async (acceptedFiles) => {
-        const file = acceptedFiles[0];
-        if (file) {
-            setUploading(true);
-            setUploadError(null);
-            try {
-                const imageUrl = await uploadImage(file);
-                onUpload(imageUrl);
-            } catch (err) {
-                console.error("Upload failed", err);
-                setUploadError(err.message || 'Upload failed. Please try again.');
-            } finally {
-                setUploading(false);
-            }
-        }
-    }, [onUpload]);
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept: { 'image/*': [] },
-        maxFiles: 1
-    });
-
-    if (previewUrl) {
-        return (
-            <div className={`relative rounded-xl overflow-hidden border border-gray-200 shadow-sm group ${className} ${height}`}>
-                <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                        className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition"
-                    >
-                        <X size={20} />
-                    </button>
-                    <button
-                        onClick={() => document.getElementById('dropzone-input').click()} // Hack to re-trigger
-                        className="ml-3 bg-white text-gray-900 px-4 py-2 rounded-full font-bold hover:bg-gray-100 hidden"
-                    >
-                        Change
-                    </button>
-                </div>
-            </div>
-        );
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file")
+      return
     }
 
-    return (
-        <div
-            {...getRootProps()}
-            className={`cursor-pointer rounded-xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center text-center p-6 ${isDragActive
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
-                } ${uploading ? 'opacity-50 cursor-not-allowed' : ''} ${className} ${height}`}
-        >
-            <input {...getInputProps()} id="dropzone-input" disabled={uploading} />
-            <div className={`p-4 rounded-full mb-3 ${isDragActive ? 'bg-blue-100 text-blue-600' : 'bg-white text-gray-400 shadow-sm'}`}>
-                {uploading ? (
-                    <Loader2 size={32} className="animate-spin text-blue-600" />
-                ) : isDragActive ? (
-                    <UploadCloud size={32} />
-                ) : (
-                    <ImageIcon size={32} />
-                )}
-            </div>
-            {uploading ? (
-                <p className="text-sm font-bold text-blue-600">Uploading...</p>
-            ) : (
-                <>
-                    <p className="text-sm font-bold text-gray-700">{label || "Drag & Drop Image"}</p>
-                    <p className="text-xs text-gray-500 mt-1">or click to browse</p>
-                </>
-            )}
-            {uploadError && (
-                <p className="text-xs text-red-500 mt-2">{uploadError}</p>
-            )}
-        </div>
-    );
-};
+    // Validate file size (10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      setError("File size must be less than 10MB")
+      return
+    }
 
-export default ImageUpload;
+    setError("")
+    setUploading(true)
+
+    try {
+      const formData = new FormData()
+      formData.append("image", file)
+
+      const response = await api.post("/upload/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+
+      console.log("Image uploaded successfully:", response.data)
+      onUpload(response.data.url)
+    } catch (err) {
+      console.error("Upload failed:", err)
+      console.error("Error response:", err.response?.data)
+
+      let errorMessage = "Failed to upload image"
+
+      if (err.response?.status === 401) {
+        errorMessage = "Authentication required. Please log in again."
+      } else if (err.response?.status === 413) {
+        errorMessage = "File is too large. Maximum size is 10MB."
+      } else if (err.response?.data?.message) {
+        errorMessage = err.response.data.message
+      } else if (err.message) {
+        errorMessage = err.message
+      }
+
+      setError(errorMessage)
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      {label && <label className="block text-sm font-medium text-gray-700">{label}</label>}
+
+      {previewUrl ? (
+        <div className="relative group">
+          <img
+            src={previewUrl || "/placeholder.svg"}
+            alt="Preview"
+            className="w-full h-48 object-cover rounded-lg border border-gray-200"
+          />
+          <button
+            onClick={onRemove}
+            className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      ) : (
+        <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-200 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+            {uploading ? (
+              <>
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-3" />
+                <p className="text-sm text-gray-500">Uploading...</p>
+              </>
+            ) : (
+              <>
+                <ImageIcon className="w-10 h-10 mb-3 text-gray-400" />
+                <p className="mb-2 text-sm text-gray-500">
+                  <span className="font-semibold">Click to upload</span> or drag and drop
+                </p>
+                <p className="text-xs text-gray-400">PNG, JPG, GIF, WEBP (max 10MB)</p>
+              </>
+            )}
+          </div>
+          <input type="file" className="hidden" accept="image/*" onChange={handleFileSelect} disabled={uploading} />
+        </label>
+      )}
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
+    </div>
+  )
+}
+
+export default ImageUpload

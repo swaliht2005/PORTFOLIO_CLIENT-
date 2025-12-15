@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import api from '../../api';
 import { useNavigate, useParams } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import AdminLayout from '../../components/AdminLayout';
 import ImageUpload from '../../components/ImageUpload';
-import ProjectBuilder from '../../components/Builder/ProjectBuilder';
+import ProjectBuilder from '../../components/Builder/ProjectBuilder.jsx';
 import { Save, ArrowLeft, Layers, PenTool, Layout, Image as ImageIcon } from 'lucide-react';
 
 const AddProject = () => {
-    const { id } = useParams();
+    const { id } = useParams(); // This line was commented out in the original, but it's part of the functional code below.
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('essentials');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,8 +34,9 @@ const AddProject = () => {
         if (id) {
             const fetchProject = async () => {
                 try {
-                    const res = await api.get('/projects');
-                    const project = res.data.find(p => p._id === id);
+                    // Fetch a single project by its ID for efficiency
+                    const res = await api.get(`/projects/${id}`);
+                    const project = res.data;
                     if (project) {
                         setFormData({
                             ...project,
@@ -56,111 +55,49 @@ const AddProject = () => {
     }, [id]);
 
     const handleSubmit = async () => {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:58',message:'handleSubmit entry',data:{hasTitle:!!formData.title,hasThumbnail:!!formData.thumbnailUrl,title:formData.title,thumbnailUrl:formData.thumbnailUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-        // #endregion
-        
         if (!formData.title || !formData.thumbnailUrl) {
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:60',message:'Validation failed - missing required fields',data:{title:formData.title,thumbnailUrl:formData.thumbnailUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-            // #endregion
             alert('Title and Thumbnail Image are required.');
             return;
         }
 
         setIsSubmitting(true);
-        
-        // Clean and format the payload
-        const payload = {
-            title: formData.title,
-            thumbnailUrl: formData.thumbnailUrl,
-            category: formData.category || 'Uncategorized',
-            status: formData.status || 'published',
-            tags: typeof formData.tags === 'string' 
-                ? formData.tags.split(',').map(t => t.trim()).filter(t => t) 
-                : (Array.isArray(formData.tags) ? formData.tags.filter(t => t) : []),
-            tools: typeof formData.tools === 'string' 
-                ? formData.tools.split(',').map(t => t.trim()).filter(t => t) 
-                : (Array.isArray(formData.tools) ? formData.tools.filter(t => t) : []),
-            images: Array.isArray(formData.images) ? formData.images.filter(img => img && img.url) : [],
-            contentModules: Array.isArray(formData.contentModules) ? formData.contentModules : []
-        };
-        
-        // Add optional fields only if they have values
-        if (formData.description) payload.description = formData.description;
-        if (formData.imageUrl) payload.imageUrl = formData.imageUrl;
-        if (formData.liveLink) payload.liveLink = formData.liveLink;
-        if (formData.repoLink) payload.repoLink = formData.repoLink;
-        if (formData.client) payload.client = formData.client;
-        if (formData.year) payload.year = formData.year;
-        if (formData.role) payload.role = formData.role;
-
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:81',message:'Payload before request',data:{payloadKeys:Object.keys(payload),title:payload.title,thumbnailUrl:payload.thumbnailUrl,imagesCount:payload.images?.length,contentModulesCount:payload.contentModules?.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-        // #endregion
-
-        const token = localStorage.getItem('token');
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:92',message:'Token check',data:{hasToken:!!token,tokenLength:token?.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-        // #endregion
-        if (!token) {
-            alert('You must be logged in to save projects.');
-            setIsSubmitting(false);
-            navigate('/admin');
-            return;
-        }
 
         try {
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:104',message:'Before API call',data:{method:id?'PUT':'POST',url:id?`/projects/${id}`:'/projects',payloadSize:JSON.stringify(payload).length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-            // #endregion
+            // Create a mutable copy of formData to build the payload
+            const payload = { ...formData };
+
+            // Convert comma-separated strings to arrays for tags and tools
+            if (typeof payload.tags === 'string') {
+                payload.tags = payload.tags.split(',').map(t => t.trim()).filter(t => t);
+            }
+            if (typeof payload.tools === 'string') {
+                payload.tools = payload.tools.split(',').map(t => t.trim()).filter(t => t);
+            }
+
+            // Ensure images and contentModules are arrays
+            payload.images = Array.isArray(payload.images) ? payload.images.filter(img => img && img.url && img.url.trim() !== '') : [];
+            payload.contentModules = Array.isArray(payload.contentModules) ? payload.contentModules : [];
+
             console.log('Submitting project:', id ? 'UPDATE' : 'CREATE', payload);
+
             if (id) {
                 const response = await api.put(`/projects/${id}`, payload);
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:107',message:'Update success',data:{status:response.status,projectId:response.data?._id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                // #endregion
                 console.log('Project updated successfully:', response.data);
             } else {
                 const response = await api.post('/projects', payload);
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:110',message:'Create success',data:{status:response.status,projectId:response.data?._id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                // #endregion
                 console.log('Project created successfully:', response.data);
             }
             navigate('/admin/dashboard');
         } catch (err) {
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:113',message:'Error caught',data:{hasResponse:!!err.response,status:err.response?.status,statusText:err.response?.statusText,errorMessage:err.response?.data?.message,errorData:err.response?.data,errorName:err.name,errorMsg:err.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-            // #endregion
             console.error('Error saving project:', err);
-            console.error('Error response:', err.response?.data);
-            console.error('Error status:', err.response?.status);
-            console.error('Full error:', JSON.stringify(err.response?.data || err, null, 2));
-            
-            // Handle 401 errors (token expired) - api interceptor will handle redirect automatically
+
+            // The API interceptor will handle 401 errors (token expired) by redirecting.
             if (err.response?.status === 401) {
-                // The api interceptor already redirected to /admin, just return without showing error
+                // No need to alert, the interceptor handles the redirect.
                 return;
             }
-            
-            // Extract error message properly
-            let msg = 'Failed to save project';
-            if (err.response?.data?.message) {
-                msg = err.response.data.message;
-            } else if (typeof err.response?.data === 'string') {
-                msg = err.response.data;
-            } else if (err.response?.data?.error) {
-                msg = err.response.data.error;
-            } else if (err.message) {
-                msg = err.message;
-            } else if (typeof err === 'string') {
-                msg = err;
-            }
-            
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/5b73d0de-fbd6-4c18-8606-043bbb911494',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AddProject.jsx:128',message:'Error message extracted',data:{finalMessage:msg},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-            // #endregion
+
+            const msg = err.response?.data?.message || err.message || 'Failed to save project. Please try again.';
             alert(`Error: ${msg}`);
         } finally {
             setIsSubmitting(false);
@@ -358,7 +295,7 @@ const AddProject = () => {
                         {activeTab !== 'media' && (
                             <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
                                 <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                    <ImageIcon size={16} /> Thumbnail Image
+                                    <ImageIcon /> Thumbnail Image
                                 </h3>
                                 <ImageUpload
                                     label="Upload Thumbnail"
@@ -366,7 +303,6 @@ const AddProject = () => {
                                     onUpload={(url) => setFormData({ ...formData, thumbnailUrl: url })}
                                     onRemove={() => setFormData({ ...formData, thumbnailUrl: '' })}
                                 />
-                                <p className="text-xs text-gray-400 mt-3 text-center">For grid view (4:3 aspect)</p>
                             </div>
                         )}
                     </div>

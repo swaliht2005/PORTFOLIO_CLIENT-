@@ -1,32 +1,35 @@
-import axios from 'axios';
+import axios from "axios"
 
-// Create a new axios instance
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api', // Your API base URL
-});
+  baseURL: "http://localhost:5000/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
 
-// Request Interceptor: Add the token to every request if it exists
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token")
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`
     }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
 
-// Response Interceptor: Handle 401 errors (Invalid Token)
 api.interceptors.response.use(
-    (response) => response, // If response is successful, just return it
-    (error) => {
-        // If the error is a 401 Unauthorized
-        if (error.response && error.response.status === 401) {
-            localStorage.removeItem('token'); // Remove the invalid token
-            window.location.href = '/admin'; // Redirect to login page
-        }
-        return Promise.reject(error);
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid
+      localStorage.removeItem("token")
+      window.location.href = "/login"
     }
-);
+    return Promise.reject(error)
+  },
+)
 
-export default api;
+export default api

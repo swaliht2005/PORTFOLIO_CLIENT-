@@ -3,14 +3,14 @@ import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const ImageModule = ({ data, onChange }) => {
-    // data structure: { url: string, caption: string }
+
 
     const onDrop = useCallback((acceptedFiles) => {
         const file = acceptedFiles[0];
         if (file) {
-            // Create object URL for preview
+          
             const url = URL.createObjectURL(file);
-            onChange({ ...data, url, file }); // Store file for eventual upload
+            onChange({ ...data, url, file }); 
         }
     }, [data, onChange]);
 
