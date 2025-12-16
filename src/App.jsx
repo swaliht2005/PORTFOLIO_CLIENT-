@@ -7,6 +7,7 @@ import AddProject from './pages/Admin/AddProject';
 import Profile from './pages/Admin/Profile';
 import AllPages from './pages/Admin/AllPages';
 import ProtectedRoute from './components/ProtectedRoute';
+import EditProject from './pages/Admin/EditProject.jsx';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <AllPages />
           </ProtectedRoute>
         } />
+         <Route path="/admin/edit/:id" element={<ProtectedRoute><EditProject /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

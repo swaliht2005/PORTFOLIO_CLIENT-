@@ -114,6 +114,7 @@ const Projects = ({ projects }) => {
                     </div>
                 )}
             </div>
+            <button>View More Projects</button>
         </section>
     );
 };
