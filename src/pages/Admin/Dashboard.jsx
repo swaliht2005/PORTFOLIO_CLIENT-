@@ -491,6 +491,7 @@ const Dashboard = () => {
                             <ProjectCard
                                 key={project._id}
                                 project={project}
+                                Layers={Layers} // Pass Layers component as a prop
                                 onDelete={() => handleDelete(project._id)}
                             />
                         ))}
@@ -524,7 +525,7 @@ const StatsCard = ({ title, value, icon, trend }) => (
     </div>
 );
 
-const ProjectCard = ({ project, onDelete }) => (
+const ProjectCard = ({ project, onDelete, Layers }) => (
     <div className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
         <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
             <img
@@ -556,7 +557,7 @@ const ProjectCard = ({ project, onDelete }) => (
                 </span>
                 {project.images && project.images.length > 0 && (
                     <span className="px-2 py-1 text-xs font-bold rounded shadow-sm bg-black/60 text-white backdrop-blur-md flex items-center gap-1">
-                        <Layers size={12} /> {project.images.length}
+                        {Layers && <Layers size={12} />} {project.images.length}
                     </span>
                 )}
             </div>

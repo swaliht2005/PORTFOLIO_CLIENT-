@@ -55,6 +55,7 @@ const Hero = () => {
 
     return (
         <section name="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#050510]">
+          
             {/* Background Particles */}
             {init && (
                 <div className="absolute inset-0 z-0">

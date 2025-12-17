@@ -83,38 +83,30 @@ const ProjectCard = ({ project, index }) => {
     );
 };
 
-const Projects = ({ projects }) => {
+const Projects = ({ projects, showViewMore = false }) => { // Add prop
     const gridRef = useRef(null);
 
     return (
-        <section name="projects" className="py-24 bg-[#050510] relative bento-section"> {/* Added bento-section class for spotlight */}
-            {/* Global Spotlight for the section */}
-            <GlobalSpotlight gridRef={gridRef} spotlightRadius={300} glowColor="132, 0, 255" />
+        <section name="projects" className="py-24 bg-[#050510] relative bento-section">
+            {/* ... GlobalSpotlight and Header ... */}
 
-            <div className="container mx-auto px-6">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">My Projects</h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
-                        Here are some of my recent works showcasing my skills in UI/UX design and full-stack development.
-                    </p>
-                </div>
-
-                <div
-                    ref={gridRef} // Ref for GlobalSpotlight
-                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto card-grid"
-                >
-                    {projects.map((project, index) => (
-                        <ProjectCard key={project._id} project={project} index={index} />
-                    ))}
-                </div>
-
-                {projects.length === 0 && (
-                    <div className="text-center py-20">
-                        <p className="text-gray-500 text-lg">No projects found. Check back later!</p>
-                    </div>
-                )}
+            {/* Grid */}
+            <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto card-grid">
+                {projects.map((project, index) => (
+                    <ProjectCard key={project._id} project={project} index={index} />
+                ))}
             </div>
-            <button>View More Projects</button>
+
+            {/* Conditional Button Rendering */}
+            {showViewMore && projects.length >= 6 && (
+                <div className="text-center mt-12">
+                    <Link to="/projects">
+                        <button className="bg-[#7f5eff] hover:bg-[#a68aff] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
+                            View More Projects
+                        </button>
+                    </Link>
+                </div>
+            )}
         </section>
     );
 };
