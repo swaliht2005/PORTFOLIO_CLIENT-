@@ -6,7 +6,7 @@ import AdminLayout from '../../components/AdminLayout';
 import ImageUpload from '../../components/ImageUpload';
 import ProjectBuilder from '../../components/Builder/ProjectBuilder.jsx';
 import { Save, ArrowLeft, Layers, PenTool, Layout, Image as ImageIcon } from 'lucide-react';
-
+import 'react-quill-new/dist/quill.snow.css';
 const AddProject = () => {
     const { id } = useParams();
     const navigate = useNavigate();
