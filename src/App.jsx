@@ -63,7 +63,7 @@ import AllPages from './pages/Admin/AllPages';
 import ProtectedRoute from './components/ProtectedRoute';
 import EditProject from './pages/Admin/EditProject.jsx';
 import MoreProjects from './components/MoreProjects.jsx';
-
+import ContactPage from './pages/ContactPage.jsx'
 function App() {
   return (
     <Router>
@@ -96,6 +96,7 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/admin/edit/:id" element={<ProtectedRoute><EditProject /></ProtectedRoute>} />
+       <Route path="/contactpage" element={<ContactPage />} />
       </Routes>
     </Router>
   );
