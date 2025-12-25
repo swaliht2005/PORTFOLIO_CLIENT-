@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 import { Link as RouterLink } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import axios from 'axios';
+import api from '../api';
 import PillNav from './PillNav';
 
 const Navbar = () => {
@@ -28,11 +28,7 @@ const Navbar = () => {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/auth/profile', {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
+                    const res = await api.get('/auth/profile');
                     // Use 'avatar' to match the Profile component
                     if (res.data && res.data.avatar) {
                         setProfileLogo(res.data.avatar);

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api';
 import { Link } from 'react-router-dom';
 import AdminLayout from '../../components/AdminLayout';
 
@@ -29,7 +29,7 @@ const Dashboard = () => {
 
     const fetchProjects = async () => {
         try {
-            const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/projects');
+            const res = await api.get('/projects');
             const data = res.data;
             setProjects(data);
 
@@ -51,9 +51,7 @@ const Dashboard = () => {
     const handleDelete = async (id) => {
         if (!confirm('Delete this project permanently?')) return;
         try {
-            await axios.delete(`https://portfolio-server-ekep.onrender.com/api/projects/${id}`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
+            await api.delete(`/projects/${id}`);
             fetchProjects(); // Refresh
         } catch (err) {
             alert('Failed to delete');

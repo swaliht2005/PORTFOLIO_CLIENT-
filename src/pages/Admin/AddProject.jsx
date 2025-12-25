@@ -8,9 +8,7 @@ import ProjectBuilder from '../../components/Builder/ProjectBuilder.jsx';
 import { Save, ArrowLeft, Layers, PenTool, Layout, Image as ImageIcon } from 'lucide-react';
 import 'react-quill-new/dist/quill.snow.css';
 
-const api = axios.create({
-    baseURL: 'YOUR_API_URL_HERE'
-});
+import api from '../../api';
 
 const AddProject = () => {
     const { id } = useParams();
@@ -65,7 +63,7 @@ const AddProject = () => {
         try {
             const data = new FormData();
             data.append("image", file); // 'image' matches upload.single('image') in backend
-            
+
             const res = await api.post("/upload/image", data, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
@@ -87,7 +85,7 @@ const AddProject = () => {
         try {
             // --- STEP 1: Upload Thumbnail (if it's a new file) ---
             let finalThumbnailUrl = formData.thumbnailUrl;
-            
+
             // If the user selected a new thumbnail, 'thumbnailFile' will be set
             if (thumbnailFile) {
                 console.log("Uploading thumbnail...");
@@ -102,7 +100,7 @@ const AddProject = () => {
                     if (module.type === 'image' && module.content.file) {
                         console.log("Uploading module image...");
                         const cloudUrl = await uploadImage(module.content.file);
-                        
+
                         // Return updated module with Cloudinary URL and NO raw file
                         return {
                             ...module,
@@ -119,10 +117,10 @@ const AddProject = () => {
             );
 
             // --- STEP 3: Construct Final Payload ---
-            const payload = { 
+            const payload = {
                 ...formData,
                 thumbnailUrl: finalThumbnailUrl,
-                contentModules: processedModules 
+                contentModules: processedModules
             };
 
             // Formatting tags/tools arrays
@@ -178,8 +176,8 @@ const AddProject = () => {
                             <p className="text-gray-500 text-sm">Showcase your best work</p>
                         </div>
                     </div>
-                   
-                     <div className="flex gap-3">
+
+                    <div className="flex gap-3">
                         <select
                             className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
                             value={formData.status}
@@ -202,7 +200,7 @@ const AddProject = () => {
 
                 {/* Tabs ... (Keep existing Tabs code) ... */}
                 <div className="flex gap-6 border-b border-gray-200 mb-8">
-                     {tabs.map(tab => (
+                    {tabs.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
@@ -222,9 +220,9 @@ const AddProject = () => {
                     {/* Main Form Area */}
                     <div className="lg:col-span-2 space-y-8 animate-fade-in">
                         {/* ... (Keep Essentials and Details tabs exactly as they were) ... */}
-                        
+
                         {activeTab === 'essentials' && (
-                             <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-6">
+                            <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Project Title</label>
                                     <input
@@ -236,7 +234,7 @@ const AddProject = () => {
                                     />
                                 </div>
                                 {/* ... Rest of essentials ... */}
-                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                                         <select
@@ -273,7 +271,7 @@ const AddProject = () => {
                         )}
 
                         {activeTab === 'details' && (
-                             <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-6">
+                            <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-6">
                                 {/* ... Keep Details fields ... */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
@@ -352,7 +350,7 @@ const AddProject = () => {
                                 <ImageUpload
                                     label="Upload Thumbnail"
                                     previewUrl={formData.thumbnailUrl} // Show existing URL or preview
-                                    
+
                                     // UPDATED: Handle the file object explicitly
                                     onUpload={(fileOrUrl) => {
                                         if (fileOrUrl instanceof File) {

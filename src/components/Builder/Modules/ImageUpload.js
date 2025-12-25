@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../api'; // Import the pre-configured axios instance
+import api from '../../../../api'; // Import the pre-configured axios instance
 
 /**
  * A reusable component for uploading a single image.

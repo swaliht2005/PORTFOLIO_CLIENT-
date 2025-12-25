@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import {
   ArrowLeft,
   Calendar,
@@ -76,7 +76,7 @@ const ProjectDetails = () => {
     window.scrollTo(0, 0);
     const fetchProject = async () => {
       try {
-        const { data } = await axios.get("https://portfolio-server-ekep.onrender.com/api/projects");
+        const { data } = await api.get("/projects");
         setProject(data.find((p) => p._id === id));
       } catch (err) {
         console.error(err);

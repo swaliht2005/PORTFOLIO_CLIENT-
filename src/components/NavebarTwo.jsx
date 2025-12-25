@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import axios from 'axios';
+import api from '../api';
 
 const NavbarTwo = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,9 +22,7 @@ const NavbarTwo = () => {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/auth/profile', {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
+                    const res = await api.get('/auth/profile');
                     if (res.data?.avatar) {
                         setProfileLogo(res.data.avatar);
                     }
@@ -70,8 +68,8 @@ const NavbarTwo = () => {
                                     key={item.label}
                                     to={item.path}
                                     className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive
-                                            ? 'bg-[#7f5eff] text-white shadow-lg shadow-purple-500/20'
-                                            : 'text-gray-400 hover:text-white  hover:bg-[#7f5eff]'
+                                        ? 'bg-[#7f5eff] text-white shadow-lg shadow-purple-500/20'
+                                        : 'text-gray-400 hover:text-white  hover:bg-[#7f5eff]'
                                         }`}
                                 >
                                     {item.label}

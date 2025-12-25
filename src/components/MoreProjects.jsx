@@ -1,6 +1,6 @@
 // pages/MoreProjects.jsx
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Projects from '../components/Projects';
@@ -12,7 +12,7 @@ export default function MoreProjects() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/projects');
+                const res = await api.get('/projects');
                 setAllProjects(res.data);
             } catch (err) {
                 console.error("Error fetching projects:", err);

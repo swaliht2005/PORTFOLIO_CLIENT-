@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
@@ -15,7 +15,7 @@ const Home = () => {
         const fetchProjects = async () => {
             try {
                 // Fetch all projects (or implement pagination on backend if preferred)
-                const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/projects');
+                const res = await api.get('/projects');
                 setProjects(res.data);
             } catch (err) {
                 console.error(err);
