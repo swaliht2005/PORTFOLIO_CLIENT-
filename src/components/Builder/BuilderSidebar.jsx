@@ -18,12 +18,12 @@ const BuilderSidebar = ({ onAddModule }) => {
     ];
 
     return (
-        <div className="w-80 bg-white border-l border-gray-200 h-screen sticky top-0 overflow-y-auto p-6 flex flex-col gap-8 shadow-xl z-40">
+        <div className="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 lg:h-screen sticky lg:top-0 p-6 flex flex-col gap-8 shadow-xl z-40 order-first lg:order-last">
 
             {/* Add Content Section */}
             <div>
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Add Content</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-4 lg:grid-cols-2 gap-4">
                     {tools.map((tool) => (
                         <button
                             key={tool.id}
@@ -33,7 +33,7 @@ const BuilderSidebar = ({ onAddModule }) => {
                             <div className="text-gray-400 group-hover:text-blue-600 transition-colors">
                                 {tool.icon}
                             </div>
-                            <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900">{tool.label}</span>
+                            <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 hidden md:block">{tool.label}</span>
                         </button>
                     ))}
                 </div>
@@ -42,7 +42,7 @@ const BuilderSidebar = ({ onAddModule }) => {
             {/* Edit Project Section */}
             <div>
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Edit Project</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 hidden lg:grid">
                     <button className="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
                         <Palette size={20} className="text-gray-400 mb-2" />
                         <span className="text-xs font-medium text-gray-700">Styles</span>

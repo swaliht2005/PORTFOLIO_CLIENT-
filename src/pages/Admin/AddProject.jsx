@@ -166,7 +166,7 @@ const AddProject = () => {
         <AdminLayout>
             <div className="max-w-7xl mx-auto">
                 {/* Header ... (Keep existing Header code) ... */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
                     <div className="flex items-center gap-4">
                         <button onClick={() => navigate('/admin/dashboard')} className="p-2 hover:bg-gray-100 rounded-full text-gray-500">
                             <ArrowLeft size={24} />
@@ -177,9 +177,9 @@ const AddProject = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 w-full md:w-auto">
                         <select
-                            className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                            className="flex-1 md:flex-none bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
                             value={formData.status}
                             onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                         >
@@ -190,7 +190,7 @@ const AddProject = () => {
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting}
-                            className={`flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-500/30 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`flex-1 md:flex-none flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-500/30 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
                             <Save size={18} />
                             {isSubmitting ? 'Saving...' : 'Publish Project'}
@@ -199,7 +199,7 @@ const AddProject = () => {
                 </div>
 
                 {/* Tabs ... (Keep existing Tabs code) ... */}
-                <div className="flex gap-6 border-b border-gray-200 mb-8">
+                <div className="flex gap-6 border-b border-gray-200 mb-8 overflow-x-auto pb-1">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}

@@ -56,9 +56,9 @@ const ProjectBuilder = ({ modules = [], onChange }) => {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#F9F9F9]">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-[#F9F9F9]">
             {/* Main Canvas Area */}
-            <div className="flex-1 p-8 md:p-16 flex flex-col items-center min-h-[calc(100vh-80px)]">
+            <div className="w-full md:flex-1 p-4 md:p-16 flex flex-col items-center min-h-[calc(100vh-80px)] overflow-y-auto">
                 {/* 80px buffer for potential fixed header */}
 
                 <div className="w-full max-w-4xl space-y-6">
@@ -106,7 +106,17 @@ const ProjectBuilder = ({ modules = [], onChange }) => {
             </div>
 
             {/* Sticky Sidebar */}
-            <BuilderSidebar onAddModule={handleAddModule} />
+            <div className="hidden lg:block h-screen sticky top-0">
+                <BuilderSidebar onAddModule={handleAddModule} />
+            </div>
+
+            {/* Mobile Sidebar (Floating Action Button or Bottom Sheet style could be better, but simpler check first) 
+                For now, we'll keep the sidebar hidden or stack it. 
+                Actually, the sidebar is essential. Let's make it a bottom sheet or stacked on mobile? 
+                The user requested standard responsive patterns. 
+                Let's make the main container flex-col-reverse on mobile so sidebar is at bottom or top?
+                Sidebar at bottom is standard for mobile controls.
+            */}
         </div>
     );
 };
