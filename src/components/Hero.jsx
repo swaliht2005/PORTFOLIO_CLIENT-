@@ -94,8 +94,10 @@ const Hero = () => {
                         whileTap={{ scale: 0.95 }}
                         className="group relative px-8 py-3 rounded-full text-white font-semibold overflow-hidden"
                     >
+                        <Link to="/projects">
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:scale-110"></div>
                         <span className="relative z-10">View My Works</span>
+                        </Link>
                     </motion.button>
                 </motion.div>
 

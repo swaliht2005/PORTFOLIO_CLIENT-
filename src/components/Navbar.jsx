@@ -26,17 +26,13 @@ const Navbar = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const res = await api.get('/auth/profile');
-                    // Use 'avatar' to match the Profile component
-                    if (res.data && res.data.avatar) {
-                        setProfileLogo(res.data.avatar);
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch profile logo:', error);
+            try {
+                const res = await api.get('/auth/admin-profile');
+                if (res.data && res.data.avatar) {
+                    setProfileLogo(res.data.avatar);
                 }
+            } catch (error) {
+                console.error('Failed to fetch profile logo:', error);
             }
         };
         fetchProfile();
@@ -92,8 +88,8 @@ const Navbar = () => {
                                     onSetActive={(to) => setActiveSection(to)}
                                     onClick={() => setIsOpen(false)}
                                     className={`py-4 px-8 text-lg font-medium transition-all border-l-4 ${activeSection === link.href
-                                            ? 'border-[#7f5eff] text-white bg-white/5'
-                                            : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
+                                        ? 'border-[#7f5eff] text-white bg-white/5'
+                                        : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
                                         }`}
                                 >
                                     {link.label}
