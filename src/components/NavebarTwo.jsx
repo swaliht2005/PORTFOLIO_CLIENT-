@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'framer-motion';
 import api from '../api';
 
 const NavbarTwo = () => {
@@ -89,21 +90,48 @@ const NavbarTwo = () => {
             </nav>
 
             {/* Mobile Menu Dropdown */}
-            {isOpen && (
-                <div className="md:hidden fixed top-0 left-0 w-full h-screen bg-[#050510] z-40 flex flex-col items-center justify-center space-y-8">
-                    {navItems.map((link) => (
-                        <Link
-                            key={link.label}
-                            to={link.path}
+            {/* Mobile Menu Dropdown */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="md:hidden fixed inset-0 bg-[#050510]/98 backdrop-blur-xl z-[60] flex flex-col items-center justify-center space-y-8"
+                    >
+                        {/* Close button inside the menu */}
+                        <button
                             onClick={() => setIsOpen(false)}
-                            className={`text-2xl font-semibold ${location.pathname === link.path ? 'text-[#7f5eff]' : 'text-white'
-                                }`}
+                            className="absolute top-6 right-6 p-2 text-gray-400 hover:text-white transition-colors rounded-full hover:bg-white/10"
                         >
-                            {link.label}
-                        </Link>
-                    ))}
-                </div>
-            )}
+                            <FaTimes size={28} />
+                        </button>
+
+                        <div className="flex flex-col items-center gap-8">
+                            {navItems.map((link, index) => (
+                                <motion.div
+                                    key={link.label}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                >
+                                    <Link
+                                        to={link.path}
+                                        onClick={() => setIsOpen(false)}
+                                        className={`text-3xl font-bold tracking-tight transition-all duration-300 ${location.pathname === link.path
+                                                ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600'
+                                                : 'text-gray-300 hover:text-white'
+                                            }`}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 };

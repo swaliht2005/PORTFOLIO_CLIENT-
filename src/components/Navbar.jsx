@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 import { Link as RouterLink } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'framer-motion';
 import api from '../api';
 import PillNav from './PillNav';
 
@@ -69,28 +70,39 @@ const Navbar = () => {
             />
 
             {/* Mobile Menu Dropdown (Reused) */}
-            {isOpen && (
-                <div className="md:hidden fixed top-20 left-0 w-full bg-[#050510] border-t border-white/10 shadow-xl z-40">
-                    <div className="flex flex-col py-4">
-                        {navItems.map((link) => (
-                            <Link
-                                key={link.label}
-                                activeClass="active-mobile-link" // Optional: for styling the active link
-                                to={link.href}
-                                spy={true}
-                                smooth={true}
-                                duration={500}
-                                onSetActive={(to) => setActiveSection(to)}
-                                onClick={() => setIsOpen(false)}
-                                // Add a class for the active state
-                                className={`py-3 px-6 cursor-pointer transition-colors ${activeSection === link.href ? 'text-white bg-[#7f5eff]/20' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            )}
+            {/* Mobile Menu Dropdown */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="md:hidden fixed top-20 left-0 w-full bg-[#050510]/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 overflow-hidden"
+                    >
+                        <div className="flex flex-col py-6 space-y-2">
+                            {navItems.map((link) => (
+                                <Link
+                                    key={link.label}
+                                    activeClass="active-mobile-link"
+                                    to={link.href}
+                                    spy={true}
+                                    smooth={true}
+                                    duration={500}
+                                    onSetActive={(to) => setActiveSection(to)}
+                                    onClick={() => setIsOpen(false)}
+                                    className={`py-4 px-8 text-lg font-medium transition-all border-l-4 ${activeSection === link.href
+                                            ? 'border-[#7f5eff] text-white bg-white/5'
+                                            : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
+                                        }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 };
