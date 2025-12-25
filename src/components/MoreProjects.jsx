@@ -12,7 +12,7 @@ export default function MoreProjects() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/projects');
+                const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/projects');
                 setAllProjects(res.data);
             } catch (err) {
                 console.error("Error fetching projects:", err);
@@ -26,7 +26,7 @@ export default function MoreProjects() {
     return (
         <div className="bg-[#050510] min-h-screen flex flex-col">
             <Navbar />
-            
+
             <div className="pt-24 pb-12 px-6">
                 <div className="container mx-auto text-center">
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -44,7 +44,7 @@ export default function MoreProjects() {
                 // Pass false to hide the "View More" button on this page
                 <Projects projects={allProjects} showViewMore={false} />
             )}
-            
+
             <Footer />
         </div>
     );

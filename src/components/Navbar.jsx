@@ -10,7 +10,7 @@ const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
     const [profileLogo, setProfileLogo] = useState('/logo.png'); // Default logo
- 
+
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 50) {
@@ -28,7 +28,7 @@ const Navbar = () => {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const res = await axios.get('http://localhost:5000/api/auth/profile', {
+                    const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/auth/profile', {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
@@ -61,7 +61,7 @@ const Navbar = () => {
                     </RouterLink>
                 }
                 // The logoAlt prop is no longer needed as the alt text is inside the logo element
-                logoAlt="Swalih" 
+                logoAlt="Swalih"
                 items={navItems}
                 activeHref={activeSection}
                 className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050510]/90  backdrop-blur-md shadow-lg' : 'bg-transparent'}`}

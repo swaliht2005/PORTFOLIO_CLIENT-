@@ -22,7 +22,7 @@ const NavbarTwo = () => {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const res = await axios.get('http://localhost:5000/api/auth/profile', {
+                    const res = await axios.get('https://portfolio-server-ekep.onrender.com/api/auth/profile', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     if (res.data?.avatar) {
@@ -45,11 +45,10 @@ const NavbarTwo = () => {
 
     return (
         <>
-            <nav className={`fixed w-full z-50 transition-all duration-300 px-4 sm:px-10 ${
-                scrolled ? 'bg-[#050510]/90 backdrop-blur-md py-3' : 'bg-transparent py-5'
-            }`}>
+            <nav className={`fixed w-full z-50 transition-all duration-300 px-4 sm:px-10 ${scrolled ? 'bg-[#050510]/90 backdrop-blur-md py-3' : 'bg-transparent py-5'
+                }`}>
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
-                    
+
                     {/* Logo - Circular as per screenshot */}
                     <Link to="/" className="flex-shrink-0">
                         <div className="h-12 w-12 rounded-full overflow-hidden border border-white/10">
@@ -70,11 +69,10 @@ const NavbarTwo = () => {
                                 <Link
                                     key={item.label}
                                     to={item.path}
-                                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                                        isActive 
-                                            ? 'bg-[#7f5eff] text-white shadow-lg shadow-purple-500/20' 
+                                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive
+                                            ? 'bg-[#7f5eff] text-white shadow-lg shadow-purple-500/20'
                                             : 'text-gray-400 hover:text-white  hover:bg-[#7f5eff]'
-                                    }`}
+                                        }`}
                                 >
                                     {item.label}
                                 </Link>
@@ -100,9 +98,8 @@ const NavbarTwo = () => {
                             key={link.label}
                             to={link.path}
                             onClick={() => setIsOpen(false)}
-                            className={`text-2xl font-semibold ${
-                                location.pathname === link.path ? 'text-[#7f5eff]' : 'text-white'
-                            }`}
+                            className={`text-2xl font-semibold ${location.pathname === link.path ? 'text-[#7f5eff]' : 'text-white'
+                                }`}
                         >
                             {link.label}
                         </Link>

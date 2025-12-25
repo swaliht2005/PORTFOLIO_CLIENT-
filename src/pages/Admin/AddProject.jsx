@@ -1,12 +1,17 @@
 
 import { useState, useEffect } from 'react';
-import api from '../../api';
+import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminLayout from '../../components/AdminLayout';
 import ImageUpload from '../../components/ImageUpload';
 import ProjectBuilder from '../../components/Builder/ProjectBuilder.jsx';
 import { Save, ArrowLeft, Layers, PenTool, Layout, Image as ImageIcon } from 'lucide-react';
 import 'react-quill-new/dist/quill.snow.css';
+
+const api = axios.create({
+    baseURL: 'YOUR_API_URL_HERE'
+});
+
 const AddProject = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -173,7 +178,7 @@ const AddProject = () => {
                             <p className="text-gray-500 text-sm">Showcase your best work</p>
                         </div>
                     </div>
-                    {/* ... (Keep existing Save Button logic) ... */}
+                   
                      <div className="flex gap-3">
                         <select
                             className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"

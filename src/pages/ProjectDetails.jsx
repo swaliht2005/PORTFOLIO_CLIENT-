@@ -76,7 +76,7 @@ const ProjectDetails = () => {
     window.scrollTo(0, 0);
     const fetchProject = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/projects");
+        const { data } = await axios.get("https://portfolio-server-ekep.onrender.com/api/projects");
         setProject(data.find((p) => p._id === id));
       } catch (err) {
         console.error(err);
@@ -111,13 +111,13 @@ const ProjectDetails = () => {
       <header className="relative pt-32 pb-16 overflow-hidden">
         {/* Subtle Background Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-blue-500/5 blur-[120px] rounded-full -z-10" />
-        
+
         <div className="max-w-5xl mx-auto px-6">
           <Link
             to="/"
             className="group inline-flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-white transition-colors mb-12"
           >
-            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> 
+            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
             Back to Archive
           </Link>
 
@@ -179,7 +179,7 @@ const ProjectDetails = () => {
           <div>
             <span className="block text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2">Stack</span>
             <span className="text-sm font-medium truncate block">
-               {Array.isArray(project.tools) ? project.tools.join(", ") : project.tools || "React, Tailwind"}
+              {Array.isArray(project.tools) ? project.tools.join(", ") : project.tools || "React, Tailwind"}
             </span>
           </div>
         </div>
