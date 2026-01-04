@@ -57,7 +57,7 @@ const Hero = () => {
     };
 
     return (
-        <section name="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-[#050510]">
+        <section name="home" className="relative min-h-screen w-full flex items-center justify-center py-20 md:py-0 overflow-hidden bg-[#050510]">
 
             {/* Background Particles */}
             {init && (
@@ -74,13 +74,13 @@ const Hero = () => {
             <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/20 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
 
-            <div className="container mx-auto px-6 z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div className="container mx-auto px-6 z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 {/* Text Content */}
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-center md:text-left flex flex-col items-center md:items-start"
+                    className="text-center md:text-left flex flex-col items-center md:items-start order-1"
                 >
                     <h2 className="text-lg md:text-2xl font-medium text-gray-300 mb-2 md:mb-4">
                         Hello, I'm
@@ -110,11 +110,11 @@ const Hero = () => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="hidden md:block relative"
+                    className="relative order-2 w-full flex justify-center"
                 >
                     {/* You can add a 3D spline or personal image here. For now keeping it cleaner per layout */}
                     {/* Profile Image with animated rings */}
-                    <div className="relative w-full h-[400px] md:h-[600px] flex justify-center items-center">
+                    <div className="relative w-full max-w-[90%] md:max-w-full h-[450px] md:h-[600px] flex justify-center items-center">
                         <ProfileCard
                             name="Muhammed Swalih"
                             title="UI/UX & Frontend Dev"
