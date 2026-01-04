@@ -10,7 +10,7 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
-    const [profileLogo, setProfileLogo] = useState('/logo.png'); // Default logo
+    const [profileLogo, setProfileLogo] = useState('/swalih.png'); // Default logo
 
     useEffect(() => {
         const handleScroll = () => {

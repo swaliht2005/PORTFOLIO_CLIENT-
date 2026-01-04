@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { initParticlesEngine, Particles } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { Link } from 'react-router-dom';
+import swalihProfile from '../assets/swalih_profile.jpg';
+import ProfileCard from './ProfileCard';
 
 const Hero = () => {
     const [init, setInit] = useState(false);
@@ -78,22 +80,23 @@ const Hero = () => {
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
+                    className="text-center md:text-left flex flex-col items-center md:items-start"
                 >
-                    <h2 className="text-xl md:text-2xl font-medium text-gray-300 mb-4">
+                    <h2 className="text-lg md:text-2xl font-medium text-gray-300 mb-2 md:mb-4">
                         Hello, I'm
                     </h2>
-                    <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight">
                         Muhammed <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e94560] to-[#7f5eff]">Swalih</span>
                     </h1>
-                    <h3 className="text-xl md:text-2xl text-gray-400 mb-8 max-w-lg">
+                    <h3 className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-6 md:mb-8 max-w-lg mx-auto md:mx-0">
                         UI/UX Designer & Front-End Developer | MERN Stack Developer
                     </h3>
 
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="group relative px-8 py-3 rounded-full text-white font-semibold overflow-hidden"
+                        className="group relative px-8 py-3 rounded-full text-white font-semibold overflow-hidden w-fit"
                     >
                         <Link to="/projects">
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:scale-110"></div>
@@ -110,10 +113,23 @@ const Hero = () => {
                     className="hidden md:block relative"
                 >
                     {/* You can add a 3D spline or personal image here. For now keeping it cleaner per layout */}
-                    <div className="relative w-full h-[500px] flex justify-center items-center">
-                        {/* Abstract visuals */}
-                        <div className="absolute inset-0 border border-white/10 rounded-full animate-[spin_10s_linear_infinite]"></div>
-                        <div className="absolute inset-4 border border-white/5 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+                    {/* Profile Image with animated rings */}
+                    <div className="relative w-full h-[400px] md:h-[600px] flex justify-center items-center">
+                        <ProfileCard
+                            name="Muhammed Swalih"
+                            title="UI/UX & Frontend Dev"
+                            handle="swalih_me"
+                            status="Open for Work"
+                            contactText="Get in Touch"
+                            avatarUrl={swalihProfile}
+                            showUserInfo={true}
+                            enableTilt={false}
+                            enableMobileTilt={true}
+                            onContactClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                        />
+
+                        {/* Floating gradients around image for depth */}
+                        <div className="absolute -z-10 bg-gradient-to-tr from-purple-600/40 to-blue-600/40 w-[300px] h-[300px] rounded-full blur-3xl"></div>
                     </div>
                 </motion.div>
             </div>

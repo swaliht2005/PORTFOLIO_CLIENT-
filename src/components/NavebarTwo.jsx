@@ -7,7 +7,7 @@ import api from '../api';
 const NavbarTwo = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [profileLogo, setProfileLogo] = useState('/logo.png');
+    const [profileLogo, setProfileLogo] = useState('/swalih.png');
     const location = useLocation();
 
     useEffect(() => {
@@ -120,8 +120,8 @@ const NavbarTwo = () => {
                                         to={link.path}
                                         onClick={() => setIsOpen(false)}
                                         className={`text-3xl font-bold tracking-tight transition-all duration-300 ${location.pathname === link.path
-                                                ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600'
-                                                : 'text-gray-300 hover:text-white'
+                                            ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600'
+                                            : 'text-gray-300 hover:text-white'
                                             }`}
                                     >
                                         {link.label}
