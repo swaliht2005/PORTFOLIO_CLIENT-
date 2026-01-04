@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #050510;
+    /* Deep dark background */
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+/* React Quill Customization for Dark Theme Toolbar */
+.custom-quill .ql-toolbar {
+    background-color: #1a1a1a !important;
+    border-color: #1a1a1a !important;
+    color: white !important;
+    border-radius: 8px 8px 0 0;
+}
+
+.custom-quill .ql-container {
+    border-radius: 0 0 8px 8px;
+    font-size: 1.125rem;
+    /* Text lg */
+}
+
+/* Toolbar icons to white */
+.custom-quill .ql-toolbar button svg,
+.custom-quill .ql-toolbar button svg .ql-stroke {
+    stroke: white !important;
+}
+
+.custom-quill .ql-toolbar button svg .ql-fill {
+    fill: white !important;
+}
+
+.custom-quill .ql-picker {
+    color: white !important;
+}
+
+.custom-quill .ql-picker-options {
+    background-color: #1a1a1a !important;
+    color: white !important;
+}
+
+.custom-quill .ql-editor {
+    min-height: 200px;
+}
