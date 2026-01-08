@@ -3,11 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'framer-motion';
 import api from '../api';
+import swalihProfile from '../assets/swalih_profile.jpg';
 
 const NavbarTwo = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [profileLogo, setProfileLogo] = useState('/swalih.png');
+    const [profileLogo, setProfileLogo] = useState(swalihProfile);
     const location = useLocation();
 
     useEffect(() => {
@@ -50,12 +51,12 @@ const NavbarTwo = () => {
 
                     {/* Logo - Circular as per screenshot */}
                     <Link to="/" className="flex-shrink-0">
-                        <div className="h-12 w-12 rounded-full overflow-hidden border border-white/10">
+                        <div className="h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/10 transition-all duration-300 hover:scale-105 hover:border-purple-500/50">
                             <img
                                 src={profileLogo}
                                 alt="Logo"
                                 className="h-full w-full object-cover"
-                                onError={(e) => { e.target.src = 'https://via.placeholder.com/150'; }}
+                                onError={(e) => { e.target.src = swalihProfile; }}
                             />
                         </div>
                     </Link>
@@ -82,14 +83,13 @@ const NavbarTwo = () => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden text-gray-300 hover:text-white transition-colors"
+                        className="md:hidden text-gray-300 hover:text-white transition-colors p-2 active:scale-95"
                     >
                         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                     </button>
                 </div>
             </nav>
 
-            {/* Mobile Menu Dropdown */}
             {/* Mobile Menu Dropdown */}
             <AnimatePresence>
                 {isOpen && (
@@ -119,7 +119,7 @@ const NavbarTwo = () => {
                                     <Link
                                         to={link.path}
                                         onClick={() => setIsOpen(false)}
-                                        className={`text-3xl font-bold tracking-tight transition-all duration-300 ${location.pathname === link.path
+                                        className={`text-2xl sm:text-3xl font-bold tracking-tight transition-all duration-300 ${location.pathname === link.path
                                             ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600'
                                             : 'text-gray-300 hover:text-white'
                                             }`}

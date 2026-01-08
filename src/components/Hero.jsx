@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { initParticlesEngine, Particles } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { Link } from 'react-router-dom';
 import swalihProfile from '../assets/swalih_profile.jpg';
-import ProfileCard from './ProfileCard';
+import Badge from './Badge';
 
 const Hero = () => {
     const [init, setInit] = useState(false);
@@ -115,18 +115,9 @@ const Hero = () => {
                     {/* You can add a 3D spline or personal image here. For now keeping it cleaner per layout */}
                     {/* Profile Image with animated rings */}
                     <div className="relative w-full max-w-[90%] md:max-w-full h-[450px] md:h-[600px] flex justify-center items-center">
-                        <ProfileCard
-                            name="Muhammed Swalih"
-                            title="UI/UX & Frontend Dev"
-                            handle="swalih_me"
-                            status="Open for Work"
-                            contactText="Get in Touch"
-                            avatarUrl={swalihProfile}
-                            showUserInfo={true}
-                            enableTilt={false}
-                            enableMobileTilt={true}
-                            onContactClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                        />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Badge avatarUrl={swalihProfile} />
+                        </Suspense>
 
                         {/* Floating gradients around image for depth */}
                         <div className="absolute -z-10 bg-gradient-to-tr from-purple-600/40 to-blue-600/40 w-[300px] h-[300px] rounded-full blur-3xl"></div>
