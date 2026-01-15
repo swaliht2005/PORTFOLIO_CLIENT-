@@ -1,6 +1,6 @@
 
 import * as THREE from 'three'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Suspense } from 'react'
 import { Canvas, extend, useThree, useFrame } from '@react-three/fiber'
 import { useTexture, Environment, Lightformer } from '@react-three/drei'
 import { Physics, useRopeJoint, useSphericalJoint, RigidBody, CuboidCollider, BallCollider } from '@react-three/rapier'
@@ -10,9 +10,11 @@ export default function Badge({ avatarUrl }) {
         <div className="w-full h-full min-h-[500px]">
             <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 13], fov: 25 }}>
                 <ambientLight intensity={Math.PI} />
-                <Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
-                    <Band avatarUrl={avatarUrl} />
-                </Physics>
+                <Suspense fallback={null}>
+                    <Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+                        <Band avatarUrl={avatarUrl} />
+                    </Physics>
+                </Suspense>
                 <Environment blur={0.75}>
                     <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
                     <Lightformer intensity={3} color="white" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
