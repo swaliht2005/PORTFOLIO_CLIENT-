@@ -2,8 +2,9 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaGithub, FaExternalLinkAlt, FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { ParticleCard, GlobalSpotlight } from './MagicBento'; // Import from extracted component
+import { ParticleCard } from './MagicBento';
 import { useRef } from 'react';
+import ParticleBackground from './ParticleBackground';
 
 const ProjectCard = ({ project, index }) => {
     const [ref, inView] = useInView({
@@ -87,11 +88,17 @@ const Projects = ({ projects, showViewMore = false }) => { // Add prop
     const gridRef = useRef(null);
 
     return (
-        <section name="projects" className="py-24 bg-[#050510] relative bento-section">
-            {/* ... GlobalSpotlight and Header ... */}
+        <section name="projects" className="py-24 bg-[#050510] relative overflow-hidden">
+            <ParticleBackground id="projects-particles" />
+
+            {/* Header */}
+            <div className="text-center relative z-10 mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Featured Projects</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            </div>
 
             {/* Grid */}
-            <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto card-grid">
+            <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto card-grid relative z-10 px-6">
                 {projects.map((project, index) => (
                     <ProjectCard key={project._id} project={project} index={index} />
                 ))}
@@ -99,7 +106,7 @@ const Projects = ({ projects, showViewMore = false }) => { // Add prop
 
             {/* Conditional Button Rendering */}
             {showViewMore && projects.length >= 6 && (
-                <div className="text-center mt-12">
+                <div className="text-center mt-12 relative z-10">
                     <Link to="/projects">
                         <button className="bg-[#7f5eff] hover:bg-[#a68aff] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
                             View More Projects

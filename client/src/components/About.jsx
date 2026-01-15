@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import LaserFlow from './LaserFlow';
+import ParticleBackground from './ParticleBackground';
 
 const About = () => {
     const [ref, inView] = useInView({
@@ -15,14 +15,7 @@ const About = () => {
 
     return (
         <section name="about" className="py-24 bg-[#050510] relative overflow-hidden">
-            {/* Background elements */}
-            <div className="absolute inset-0 pointer-events-none z-0">
-                <LaserFlow
-                    glowColor="132, 0, 255"
-                    className="w-full h-full opacity-40"
-                />
-            </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+            <ParticleBackground id="about-particles" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
