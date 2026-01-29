@@ -9,6 +9,7 @@ import { Save, ArrowLeft, Layers, PenTool, Layout, Image as ImageIcon } from 'lu
 import 'react-quill-new/dist/quill.snow.css';
 
 import api from '../../api';
+import { splitImage } from '../../utils/imageSplitter';
 
 const AddProject = () => {
     const { id } = useParams();
@@ -16,6 +17,7 @@ const AddProject = () => {
     const [activeTab, setActiveTab] = useState('essentials');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [thumbnailFile, setThumbnailFile] = useState(null);
+    const [pdfFile, setPdfFile] = useState(null);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -74,6 +76,21 @@ const AddProject = () => {
         }
     };
 
+    const uploadFile = async (file) => {
+        try {
+            const data = new FormData();
+            data.append("file", file);
+
+            const res = await api.post("/upload/pdf", data, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            return res.data.url;
+        } catch (error) {
+            console.error("Upload failed", error);
+            throw new Error("PDF upload failed");
+        }
+    };
+
     const handleSubmit = async () => {
         if (!formData.title) {
             alert('Title is required.');
@@ -92,22 +109,62 @@ const AddProject = () => {
                 finalThumbnailUrl = await uploadImage(thumbnailFile);
             }
 
+            // --- STEP 1.5: Upload Main PDF (if it's a new file) ---
+            let finalPdfUrl = formData.pdfUrl;
+            if (pdfFile) {
+                console.log("Uploading main PDF...");
+                finalPdfUrl = await uploadFile(pdfFile);
+            }
+
             // --- STEP 2: Process Content Modules (Upload images inside modules) ---
             // We use Promise.all to upload module images in parallel
             const processedModules = await Promise.all(
                 formData.contentModules.map(async (module) => {
                     // Check if this is an image module AND has a raw file pending upload
                     if (module.type === 'image' && module.content.file) {
-                        console.log("Uploading module image...");
-                        const cloudUrl = await uploadImage(module.content.file);
+                        console.log("Processing module image...");
 
-                        // Return updated module with Cloudinary URL and NO raw file
+                        // 1. Split image if too tall
+                        const filesToUpload = await splitImage(module.content.file);
+                        console.log(`Image split into ${filesToUpload.length} chunk(s)`);
+
+                        // 2. Upload all chunks (Promise.allSettled)
+                        const uploadPromises = filesToUpload.map(file => uploadImage(file));
+                        const results = await Promise.allSettled(uploadPromises);
+
+                        // 3. Collect successful URLs
+                        const successfulUrls = results
+                            .filter(r => r.status === 'fulfilled')
+                            .map(r => r.value);
+
+                        if (successfulUrls.length === 0) {
+                            console.error("All image chunks failed to upload for module", module.id);
+                            // Keep the module but maybe mark error? Or just return as is (failed)
+                            return module;
+                        }
+
+                        // Return updated module with Cloudinary URLs (array)
+                        // We store 'urls' for the new feature, and 'url' (first one) for fallback
+                        return {
+                            ...module,
+                            content: {
+                                ...module.content,
+                                urls: successfulUrls, // Store all chunks
+                                url: successfulUrls[0], // Fallback
+                                file: undefined, // Remove the raw file object
+                            }
+                        };
+                    }
+                    if (module.type === 'pdf' && module.content.file) {
+                        console.log("Uploading module PDF...");
+                        const cloudUrl = await uploadFile(module.content.file);
+
                         return {
                             ...module,
                             content: {
                                 ...module.content,
                                 url: cloudUrl,
-                                file: undefined, // Remove the raw file object
+                                file: undefined,
                             }
                         };
                     }
@@ -120,6 +177,7 @@ const AddProject = () => {
             const payload = {
                 ...formData,
                 thumbnailUrl: finalThumbnailUrl,
+                pdfUrl: finalPdfUrl,
                 contentModules: processedModules
             };
 
@@ -270,6 +328,15 @@ const AddProject = () => {
                             </div>
                         )}
 
+                        {activeTab === 'media' && (
+                            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                                <ProjectBuilder
+                                    modules={formData.contentModules}
+                                    onChange={(modules) => setFormData({ ...formData, contentModules: modules })}
+                                />
+                            </div>
+                        )}
+
                         {activeTab === 'details' && (
                             <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-6">
                                 {/* ... Keep Details fields ... */}
@@ -327,15 +394,60 @@ const AddProject = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
-                        )}
 
-                        {activeTab === 'media' && (
-                            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                                <ProjectBuilder
-                                    modules={formData.contentModules}
-                                    onChange={(modules) => setFormData({ ...formData, contentModules: modules })}
-                                />
+                                {/* PDF Upload Section */}
+                                <div>
+                                    <h3 className="text-sm font-medium text-gray-700 mb-2">Project Documents</h3>
+                                    <div className="border border-dashed border-gray-300 rounded-xl p-6 bg-gray-50 text-center hover:bg-gray-100 transition-colors relative">
+
+                                        {formData.pdfUrl || pdfFile ? (
+                                            <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
+                                                <div className="flex items-center gap-3 overflow-hidden">
+                                                    <div className="p-2 bg-red-50 text-red-500 rounded">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></svg>
+                                                    </div>
+                                                    <div className="text-left truncate">
+                                                        <p className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
+                                                            {pdfFile ? pdfFile.name : 'Project PDF Document'}
+                                                        </p>
+                                                        <p className="text-xs text-green-600">
+                                                            {pdfFile ? 'Ready to upload' : 'Attached'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={() => {
+                                                        setPdfFile(null);
+                                                        setFormData({ ...formData, pdfUrl: '' });
+                                                    }}
+                                                    className="p-1 hover:bg-gray-100 rounded-full text-gray-400 hover:text-red-500"
+                                                >
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <input
+                                                    type="file"
+                                                    accept=".pdf"
+                                                    onChange={(e) => {
+                                                        if (e.target.files?.[0]) {
+                                                            setPdfFile(e.target.files[0]);
+                                                        }
+                                                    }}
+                                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                />
+                                                <div className="pointer-events-none">
+                                                    <div className="mx-auto w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-500 mb-2 shadow-sm">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+                                                    </div>
+                                                    <p className="text-sm font-medium text-gray-900">Upload Project PDF</p>
+                                                    <p className="text-xs text-gray-500 mt-1">Drag and drop or click (Unlimited size)</p>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>

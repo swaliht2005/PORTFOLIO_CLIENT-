@@ -8,6 +8,7 @@ import { Plus } from 'lucide-react';
 
 import TextModule from './Modules/TextModule';
 import ImageModule from './Modules/ImageModule';
+import PdfModule from './Modules/PdfModule';
 
 const BlockRenderer = ({ module, onChange }) => {
     switch (module.type) {
@@ -15,6 +16,8 @@ const BlockRenderer = ({ module, onChange }) => {
             return <TextModule data={module.content} onChange={(data) => onChange(module.id, data)} />;
         case 'image':
             return <ImageModule data={module.content} onChange={(data) => onChange(module.id, data)} />;
+        case 'pdf':
+            return <PdfModule data={module.content} onChange={(data) => onChange(module.id, data)} />;
         default:
             return <div className="p-8 text-center text-gray-400 border border-dashed rounded">Module type {module.type} coming soon</div>;
     }

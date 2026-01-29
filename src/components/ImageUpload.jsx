@@ -19,9 +19,9 @@ const ImageUpload = ({ label, previewUrl, onUpload, onRemove }) => {
       return
     }
 
-    // Validate file size (10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setError("File size must be less than 10MB")
+    // Validate file size (100MB)
+    if (file.size > 100 * 1024 * 1024) {
+      setError("File size must be less than 100MB")
       return
     }
 
@@ -39,7 +39,7 @@ const ImageUpload = ({ label, previewUrl, onUpload, onRemove }) => {
       })
 
       console.log("Image uploaded successfully:", response.data)
-      onUpload(response.data.url)
+      onUpload(response.data.url, response.data)
     } catch (err) {
       console.error("Upload failed:", err)
       console.error("Error response:", err.response?.data)
@@ -94,7 +94,7 @@ const ImageUpload = ({ label, previewUrl, onUpload, onRemove }) => {
                 <p className="mb-2 text-sm text-gray-500">
                   <span className="font-semibold">Click to upload</span> or drag and drop
                 </p>
-                <p className="text-xs text-gray-400">PNG, JPG, GIF, WEBP (max 10MB)</p>
+                <p className="text-xs text-gray-400">PNG, JPG, GIF, WEBP (max 100MB)</p>
               </>
             )}
           </div>

@@ -88,7 +88,7 @@ const Projects = ({ projects, showViewMore = false }) => { // Add prop
     const gridRef = useRef(null);
 
     return (
-        <section name="projects" className="py-24 bg-[#050510] relative overflow-hidden">
+        <section name="projects" className="py-24 bg-black relative overflow-hidden">
             <ParticleBackground id="projects-particles" />
 
             {/* Header */}
@@ -105,11 +105,18 @@ const Projects = ({ projects, showViewMore = false }) => { // Add prop
             </div>
 
             {/* Conditional Button Rendering */}
-            {showViewMore && projects.length >= 6 && (
-                <div className="text-center mt-12 relative z-10">
-                    <Link to="/projects">
-                        <button className="bg-[#7f5eff] hover:bg-[#a68aff] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
-                            View More Projects
+            {showViewMore && (
+                <div className="flex flex-wrap justify-center gap-4 mt-12 relative z-10">
+                    {projects.length >= 6 && (
+                        <Link to="/projects">
+                            <button className="bg-[#7f5eff] hover:bg-[#a68aff] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
+                                View More Projects
+                            </button>
+                        </Link>
+                    )}
+                    <Link to="/gallery">
+                        <button className="bg-transparent border-2 border-[#7f5eff] text-[#7f5eff] hover:bg-[#7f5eff] hover:text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
+                            Visit Gallery
                         </button>
                     </Link>
                 </div>

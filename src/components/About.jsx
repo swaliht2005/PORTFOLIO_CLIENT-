@@ -14,7 +14,7 @@ const About = () => {
     ];
 
     return (
-        <section name="about" className="py-24 bg-[#050510] relative overflow-hidden">
+        <section name="about" className="py-24 bg-black relative overflow-hidden">
             <ParticleBackground id="about-particles" />
 
             <div className="container mx-auto px-6 relative z-10">

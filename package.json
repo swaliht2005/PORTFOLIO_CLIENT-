@@ -34,7 +34,9 @@
     "react-quill-new": "^3.7.0",
     "react-router-dom": "^7.10.1",
     "react-scroll": "^1.9.3",
+    "react-slick": "^0.31.0",
     "recharts": "^3.5.1",
+    "slick-carousel": "^1.8.1",
     "three": "^0.160.0",
     "tsparticles": "^3.9.1",
     "uuid": "^13.0.0"

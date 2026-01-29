@@ -2,7 +2,7 @@ import { FaGithub, FaLinkedin, FaInstagram, FaBehance, FaMapMarkerAlt, FaPhone, 
 
 const Footer = () => {
     return (
-        <footer name="contact" className="bg-[#050510] text-gray-300 pt-20 pb-10 border-t border-white/10 relative overflow-hidden">
+        <footer name="contact" className="bg-black text-gray-300 pt-20 pb-10 border-t border-white/10 relative overflow-hidden">
 
             {/* Decorative Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">

@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 body {
-    background-color: #050510;
-    /* Deep dark background */
+    background-color: #000000;
+    /* Full black background */
     color: #ffffff;
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;

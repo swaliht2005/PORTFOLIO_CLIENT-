@@ -1,13 +1,14 @@
 import React from 'react';
 import {
     Image, Type, Grid, PlayCircle, Code, Aperture, MousePointer, Box,
-    Palette, Settings, Link, Download, ChevronRight
+    Palette, Settings, Link, Download, ChevronRight, FileText
 } from 'lucide-react';
 
 const BuilderSidebar = ({ onAddModule }) => {
 
     const tools = [
         { id: 'image', label: 'Image', icon: <Image size={24} /> },
+        { id: 'pdf', label: 'PDF', icon: <FileText size={24} /> },
         { id: 'text', label: 'Text', icon: <Type size={24} /> },
         { id: 'photo-grid', label: 'Photo Grid', icon: <Grid size={24} /> },
         { id: 'video', label: 'Video/Audio', icon: <PlayCircle size={24} /> },

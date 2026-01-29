@@ -57,7 +57,7 @@ const Navbar = () => {
                 logoAlt="Swalih"
                 items={navItems}
                 activeHref={activeSection}
-                className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#050510]/90  backdrop-blur-md shadow-lg' : 'bg-transparent'}`}
+                className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/90  backdrop-blur-md shadow-lg' : 'bg-transparent'}`}
                 baseColor="#e0e0e0"
                 pillColor="#7f5eff"
                 hoveredPillTextColor="#ffffff"
@@ -74,7 +74,7 @@ const Navbar = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="md:hidden fixed top-20 left-0 w-full bg-[#050510]/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 overflow-hidden"
+                        className="md:hidden fixed top-20 left-0 w-full bg-black/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 overflow-hidden"
                     >
                         <div className="flex flex-col py-6 space-y-2">
                             {navItems.map((link) => (

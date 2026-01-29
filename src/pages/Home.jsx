@@ -29,7 +29,7 @@ const Home = () => {
 
     return (
         // Add name="home" here for react-scroll to target
-        <div name="home" className="font-sans antialiased text-gray-900 bg-[#050510] min-h-screen">
+        <div name="home" className="font-sans antialiased text-gray-900 bg-black min-h-screen">
             <Navbar />
             <Hero />
             <About />

@@ -24,7 +24,7 @@ export default function MoreProjects() {
     }, []);
 
     return (
-        <div className="bg-[#050510] min-h-screen flex flex-col">
+        <div className="bg-black min-h-screen flex flex-col">
             <Navbar />
 
             <div className="pt-24 pb-12 px-6">

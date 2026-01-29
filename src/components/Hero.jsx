@@ -8,7 +8,7 @@ const Hero = () => {
 
 
     return (
-        <section name="home" className="relative min-h-screen w-full flex items-center justify-center py-20 md:py-0 overflow-hidden bg-[#050510]">
+        <section name="home" className="relative min-h-screen w-full flex items-center justify-center py-20 md:py-0 overflow-hidden bg-black">
 
             <ParticleBackground id="hero-particles" />
 

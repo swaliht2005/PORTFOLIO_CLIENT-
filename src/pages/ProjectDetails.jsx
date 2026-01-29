@@ -8,6 +8,8 @@ import {
   Github,
   Layers,
   ChevronRight,
+  FileText,
+  Download,
 } from "lucide-react";
 import NavebarTwo from "../components/NavebarTwo";
 import Footer from "../components/Footer";
@@ -46,20 +48,76 @@ const ModuleRenderer = ({ module }) => {
   }
 
   if (module.type === "image") {
+    const imageUrls = module.content.urls || [module.content.url];
+
     return (
-      <section className="max-w-6xl mx-auto px-6 py-12">
-        <div className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-          <img
-            src={module.content.url}
-            alt={module.content.caption || "Project visual"}
-            className="w-full transition-transform duration-700 group-hover:scale-[1.02]"
-          />
+      <section className="max-w-6xl mx-auto px-6">
+        {/* Removed overflow-hidden to prevent clipping, border applies to stack visually */}
+        <div className="group relative border border-zinc-800 bg-zinc-900 rounded-2xl">
+          {imageUrls.map((url, idx) => {
+            const isFirst = idx === 0;
+            const isLast = idx === imageUrls.length - 1;
+
+            return (
+              <img
+                key={idx}
+                src={url}
+                alt={module.content.caption || `Project visual part ${idx + 1}`}
+                className={`w-full block select-none
+                  ${isFirst ? 'rounded-t-2xl' : ''}
+                  ${isLast ? 'rounded-b-2xl' : ''}
+                `}
+                style={{ display: 'block' }}
+              />
+            );
+          })}
+
         </div>
         {module.content.caption && (
           <p className="mt-4 text-center text-sm font-medium text-zinc-500 italic">
             — {module.content.caption}
           </p>
         )}
+      </section>
+    );
+  }
+
+  if (module.type === "pdf") {
+    return (
+      <section className="max-w-3xl mx-auto px-6 py-6">
+        <div className="flex items-center gap-4 p-6 border border-zinc-800 rounded-xl bg-zinc-900/50 hover:bg-zinc-900 transition-all hover:border-zinc-700 group">
+          <div className="p-4 bg-red-500/10 text-red-500 rounded-xl group-hover:bg-red-500/20 transition-colors">
+            <FileText size={32} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-white truncate text-lg">
+              {module.content.name || "Document"}
+            </h4>
+            {module.content.caption && (
+              <p className="text-sm text-zinc-500 mt-1 line-clamp-1">{module.content.caption}</p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <a
+              href={module.content.url}
+              target="_blank"
+              rel="noreferrer"
+              className="shrink-0 px-5 py-2.5 bg-white text-black rounded-lg text-sm font-bold hover:bg-zinc-200 transition-colors"
+            >
+              View PDF
+            </a>
+            <a
+              href={module.content.url}
+              download
+              target="_blank"
+              rel="noreferrer"
+              className="shrink-0 px-3 py-2.5 bg-zinc-800 text-white rounded-lg text-sm font-bold hover:bg-zinc-700 transition-colors flex items-center"
+              title="Download PDF"
+            >
+              <Download size={18} />
+            </a>
+          </div>
+        </div>
       </section>
     );
   }
@@ -152,6 +210,26 @@ const ProjectDetails = () => {
                   GitHub Source <Github size={18} />
                 </a>
               )}
+              {project.pdfUrl && (
+                <div className="flex gap-2">
+                  <a
+                    href={project.pdfUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 group rounded-xl bg-zinc-800 px-4 py-4 text-white font-medium hover:bg-zinc-700 transition-all border border-zinc-700"
+                  >
+                    View PDF <FileText size={18} />
+                  </a>
+                  <a
+                    href={project.pdfUrl}
+                    download
+                    className="flex items-center justify-center group rounded-xl bg-zinc-800 px-4 py-4 text-white font-medium hover:bg-zinc-700 transition-all border border-zinc-700"
+                    title="Download"
+                  >
+                    <Download size={18} />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -184,6 +262,31 @@ const ProjectDetails = () => {
           </div>
         </div>
       </section>
+
+      {/* Image Gallery (if exists) */}
+      {project.images && project.images.length > 0 && (
+        <section className="py-20 bg-black">
+          <div className="max-w-7xl mx-auto px-6">
+            <h3 className="text-2xl font-bold mb-8 text-zinc-200">Project Gallery</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 space-y-0">
+              {project.images.map((img, idx) => (
+                <div key={img.id || idx} className="relative group overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 aspect-video">
+                  <img
+                    src={img.url}
+                    alt={img.caption || `Gallery ${idx + 1}`}
+                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {img.caption && (
+                    <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform">
+                      <p className="text-sm text-white font-medium">{img.caption}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Main Content Area */}
       <main className="py-20 bg-gradient-to-b from-[#0a0a0a] to-black">

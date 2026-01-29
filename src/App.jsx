@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import EditProject from './pages/Admin/EditProject.jsx';
 import MoreProjects from './components/MoreProjects.jsx';
 import ContactPage from './pages/ContactPage.jsx'
+import Gallery from './pages/Gallery.jsx'
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
 
         <Route path="/project/:id" element={<ProjectDetails />} />
         <Route path="/projects" element={<MoreProjects />} />
+        <Route path="/gallery" element={<Gallery />} />
 
         <Route path="/admin" element={<Login />} />
         <Route path="/admin/dashboard" element={
@@ -42,7 +44,7 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/admin/edit/:id" element={<ProtectedRoute><EditProject /></ProtectedRoute>} />
-       <Route path="/contactpage" element={<ContactPage />} />
+        <Route path="/contactpage" element={<ContactPage />} />
       </Routes>
     </Router>
   );
