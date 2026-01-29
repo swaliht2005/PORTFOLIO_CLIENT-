@@ -105,20 +105,18 @@ const Projects = ({ projects, showViewMore = false }) => { // Add prop
             </div>
 
             {/* Conditional Button Rendering */}
-            {showViewMore && (
+            {showViewMore && projects.length >= 6 && (
                 <div className="flex flex-wrap justify-center gap-4 mt-12 relative z-10">
-                    {projects.length >= 6 && (
-                        <Link to="/projects">
-                            <button className="bg-[#7f5eff] hover:bg-[#a68aff] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
-                                View More Projects
-                            </button>
-                        </Link>
-                    )}
-                    <Link to="/gallery">
-                        <button className="bg-transparent border-2 border-[#7f5eff] text-[#7f5eff] hover:bg-[#7f5eff] hover:text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
-                            Visit Gallery
+                    {/* projects.length check is redundant here but keeps structure generic if needed, 
+                        but since it's the only button now, the parent check handles it. 
+                        I will remove the inner check to simplify. */ }
+                    <Link to="/projects">
+                        <button className="bg-[#7f5eff] hover:bg-[#a68aff] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
+                            View More Projects
                         </button>
                     </Link>
+
+
                 </div>
             )}
         </section>

@@ -1,7 +1,7 @@
 // pages/MoreProjects.jsx
 import { useEffect, useState } from 'react';
 import api from '../api';
-import Navbar from '../components/Navbar';
+import NavbarTwo from './NavebarTwo';
 import Footer from '../components/Footer';
 import Projects from '../components/Projects';
 
@@ -25,18 +25,8 @@ export default function MoreProjects() {
 
     return (
         <div className="bg-black min-h-screen flex flex-col">
-            <Navbar />
+            <NavbarTwo />
 
-            <div className="pt-24 pb-12 px-6">
-                <div className="container mx-auto text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                        All Projects
-                    </h1>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
-                        A complete archive of my work in UI/UX design.
-                    </p>
-                </div>
-            </div>
 
             {loading ? (
                 <div className="text-white text-center py-20">Loading...</div>
