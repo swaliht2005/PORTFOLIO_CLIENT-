@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import About from '../components/About';
 import Projects from '../components/Projects';
+import ContactCTA from '../components/ContactCTA';
 
 
 const Home = () => {
@@ -35,6 +36,7 @@ const Home = () => {
             <About />
             <Projects projects={featuredProjects} showViewMore={true} />
             <div name="contact">
+                <ContactCTA />
                 <Footer />
             </div>
         </div>
