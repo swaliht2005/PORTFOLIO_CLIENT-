@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { AnimatePresence, motion } from 'framer-motion';
-import api from '../api';
+import siteData from '../data/site';
 import swalihProfile from '../assets/swalih_profile.jpg';
 
 const NavbarTwo = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [profileLogo, setProfileLogo] = useState(swalihProfile);
+    const [profileLogo, setProfileLogo] = useState(siteData.profileLogo || swalihProfile);
     const location = useLocation();
 
     useEffect(() => {
@@ -17,23 +17,6 @@ const NavbarTwo = () => {
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const res = await api.get('/auth/profile');
-                    if (res.data?.avatar) {
-                        setProfileLogo(res.data.avatar);
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch profile logo:', error);
-                }
-            }
-        };
-        fetchProfile();
     }, []);
 
     const navItems = [

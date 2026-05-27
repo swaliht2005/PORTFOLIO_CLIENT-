@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import api from "../api";
+import projects from "../data/projects";
 import {
   ArrowLeft,
   Calendar,
@@ -18,7 +18,7 @@ import Footer from "../components/Footer";
 const sanitize = (html = "") =>
   html.replace(/<script[^>]*>([\S\s]*?)<\/script>/gim, "");
 
-// --- Enhanced Skeleton Loader ---
+// --- Skeleton Loader (kept for smooth UX) ---
 const Skeleton = () => (
   <div className="min-h-screen bg-[#0a0a0a] text-white">
     <div className="max-w-5xl mx-auto px-6 pt-32 animate-pulse">
@@ -52,7 +52,6 @@ const ModuleRenderer = ({ module }) => {
 
     return (
       <section className="max-w-6xl mx-auto px-6">
-        {/* Removed overflow-hidden to prevent clipping, border applies to stack visually */}
         <div className="group relative border border-zinc-800 bg-zinc-900 rounded-2xl">
           {imageUrls.map((url, idx) => {
             const isFirst = idx === 0;
@@ -71,7 +70,6 @@ const ModuleRenderer = ({ module }) => {
               />
             );
           })}
-
         </div>
         {module.content.caption && (
           <p className="mt-4 text-center text-sm font-medium text-zinc-500 italic">
@@ -127,22 +125,16 @@ const ModuleRenderer = ({ module }) => {
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Find the project synchronously from static data
+  const project = projects.find((p) => p.id === id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const fetchProject = async () => {
-      try {
-        const { data } = await api.get("/projects");
-        setProject(data.find((p) => p._id === id));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setTimeout(() => setLoading(false), 500); // Slight delay for smooth transition
-      }
-    };
-    fetchProject();
+    // Brief delay for a smooth skeleton-to-content transition
+    const t = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(t);
   }, [id]);
 
   if (loading) return <Skeleton />;
@@ -153,7 +145,7 @@ const ProjectDetails = () => {
         <h2 className="text-3xl font-bold mb-2">Project Not Found</h2>
         <p className="text-zinc-500 mb-8">The project you're looking for doesn't exist or was moved.</p>
         <Link to="/" className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-zinc-200 transition">
-          <ArrowLeft size={18} /> Return to Gallery
+          <ArrowLeft size={18} /> Return to Home
         </Link>
       </div>
     );

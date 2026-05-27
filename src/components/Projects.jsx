@@ -29,7 +29,7 @@ const ProjectCard = ({ project, index }) => {
                 glowColor="132, 0, 255" // Matches the theme
             >
                 {/* Image Container */}
-                <Link to={`/project/${project._id}`} className="block h-56 overflow-hidden relative cursor-pointer flex-shrink-0">
+                <Link to={`/project/${project.id}`} className="block h-56 overflow-hidden relative cursor-pointer flex-shrink-0">
                     {/* Overlay for depth */}
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10" />
                     <img
@@ -41,7 +41,7 @@ const ProjectCard = ({ project, index }) => {
 
                 {/* Content */}
                 <div className="p-6 flex-1 flex flex-col relative z-20 bg-[#16213e]/80 backdrop-blur-sm"> {/* Added background to ensure text readability over potential particles */}
-                    <Link to={`/project/${project._id}`} className="block">
+                    <Link to={`/project/${project.id}`} className="block">
                         <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#7f5eff] transition-colors">{project.title}</h3>
                     </Link>
 
@@ -54,7 +54,7 @@ const ProjectCard = ({ project, index }) => {
                     </div>
 
                     {/* Description (stripped html) */}
-                    <Link to={`/project/${project._id}`} className="block mb-6 flex-1">
+                    <Link to={`/project/${project.id}`} className="block mb-6 flex-1">
                         <p className="text-gray-400 text-sm line-clamp-3 hover:text-gray-300 transition-colors">
                             {project.description ? project.description.replace(/<[^>]+>/g, '') : 'No description available.'}
                         </p>
@@ -74,7 +74,7 @@ const ProjectCard = ({ project, index }) => {
                             )}
                         </div>
 
-                        <Link to={`/project/${project._id}`} className="flex items-center gap-1 text-sm font-bold text-[#7f5eff] hover:text-white transition-colors group-hover:translate-x-1 duration-300">
+                        <Link to={`/project/${project.id}`} className="flex items-center gap-1 text-sm font-bold text-[#7f5eff] hover:text-white transition-colors group-hover:translate-x-1 duration-300">
                             Details <FaArrowRight size={12} />
                         </Link>
                     </div>
@@ -100,7 +100,7 @@ const Projects = ({ projects, showViewMore = false }) => { // Add prop
             {/* Grid */}
             <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto card-grid relative z-10 px-6">
                 {projects.map((project, index) => (
-                    <ProjectCard key={project._id} project={project} index={index} />
+                    <ProjectCard key={project.id} project={project} index={index} />
                 ))}
             </div>
 

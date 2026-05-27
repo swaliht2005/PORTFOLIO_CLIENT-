@@ -79,7 +79,15 @@ const PillNav = ({
         <nav className={`${className} flex items-center justify-between py-4 px-6 md:px-10`} ref={containerRef} style={{ color: baseColor }}>
             {/* Logo */}
             <div className="flex items-center">
-                {logo ? <img src={logo} alt={logoAlt} className="h-10 w-auto" /> : <span className="text-2xl font-bold">Logo</span>}
+                {logo ? (
+                    typeof logo === 'string' ? (
+                        <img src={logo} alt={logoAlt} className="h-10 w-auto" />
+                    ) : (
+                        logo
+                    )
+                ) : (
+                    <span className="text-2xl font-bold">Logo</span>
+                )}
             </div>
 
             {/* Desktop Menu */}
