@@ -10,7 +10,7 @@ const projects = [
   title: "HM Motors EV Website Redesign",
   shortDescription: "Redesigning a legacy automotive brand for the electric era.",
   description: "<p>A complete UX redesign of HM Motors' website — improving brand trust, product discovery, and user journey for EV-first users.</p>",
-  thumbnailUrl: "/src/assets/HM Thambinale.png",
+  thumbnailUrl: "/HM Thambinale.png",
   category: "UI/UX Design",
   year: "2025",
   role: "UI/UX Designer",
@@ -25,7 +25,7 @@ const projects = [
       id: "mod-1",
       type: "image",
       content: {
-        urls: ["/src/assets/HM casstady.png"],
+        urls: ["/HM casstady.png"],
         caption: "HM Motors EV Website Redesign Case Study",
       },
     },
