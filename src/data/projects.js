@@ -16,7 +16,7 @@ const projects = [
   role: "UI/UX Designer",
   tools: ["Figma", "Notion"],
   tags: ["UI/UX", "Web Design", "Automotive", "EV"],
-  liveLink: "",
+  liveLink: "https://hindustan-motors.vercel.app/",
   repoLink: "",
   pdfUrl: "",
   images: [],
