@@ -21,17 +21,17 @@ const ProjectCard = ({ project, index }) => {
             className="h-full"
         >
             <ParticleCard
-                className="group relative bg-[#16213e] rounded-xl overflow-hidden border border-white/5 hover:border-[#7f5eff]/50 transition-all duration-300 flex flex-col h-full"
+                className="group relative bg-[#0e0e0e] rounded-xl overflow-hidden border border-white/5 hover:border-[#ffbd39]/50 transition-all duration-300 flex flex-col h-full shine-effect"
                 enableStars={true}
                 enableTilt={true}
                 enableMagnetism={true}
                 clickEffect={true}
-                glowColor="132, 0, 255" // Matches the theme
+                glowColor="255, 189, 57" // Gold theme RGB
             >
                 {/* Image Container */}
                 <Link to={`/project/${project.id}`} className="block h-56 overflow-hidden relative cursor-pointer flex-shrink-0">
                     {/* Overlay for depth */}
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10" />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors z-10" />
                     <img
                         src={project.thumbnailUrl || project.imageUrl}
                         alt={project.title}
@@ -40,14 +40,14 @@ const ProjectCard = ({ project, index }) => {
                 </Link>
 
                 {/* Content */}
-                <div className="p-6 flex-1 flex flex-col relative z-20 bg-[#16213e]/80 backdrop-blur-sm"> {/* Added background to ensure text readability over potential particles */}
+                <div className="p-6 flex-1 flex flex-col relative z-20 bg-[#0e0e0e]/90 backdrop-blur-sm">
                     <Link to={`/project/${project.id}`} className="block">
-                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#7f5eff] transition-colors">{project.title}</h3>
+                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#ffbd39] transition-colors">{project.title}</h3>
                     </Link>
 
                     <div className="flex flex-wrap gap-2 mb-4">
                         {project.tags.map((tag, i) => (
-                            <span key={i} className="text-xs text-[#7f5eff] bg-[#7f5eff]/10 px-2 py-1 rounded">
+                            <span key={i} className="text-xs text-[#ffbd39] bg-[#ffbd39]/10 px-2.5 py-1 rounded-md font-medium border border-[#ffbd39]/10">
                                 {tag}
                             </span>
                         ))}
@@ -55,7 +55,7 @@ const ProjectCard = ({ project, index }) => {
 
                     {/* Description (stripped html) */}
                     <Link to={`/project/${project.id}`} className="block mb-6 flex-1">
-                        <p className="text-gray-400 text-sm line-clamp-3 hover:text-gray-300 transition-colors">
+                        <p className="text-gray-400 text-sm line-clamp-3 hover:text-gray-300 transition-colors leading-relaxed">
                             {project.description ? project.description.replace(/<[^>]+>/g, '') : 'No description available.'}
                         </p>
                     </Link>
@@ -63,18 +63,18 @@ const ProjectCard = ({ project, index }) => {
                     <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
                         <div className="flex gap-4">
                             {project.liveLink && (
-                                <a href={project.liveLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-white hover:text-[#7f5eff] transition-colors" title="Live Demo">
+                                <a href={project.liveLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="Live Demo">
                                     <FaExternalLinkAlt size={14} />
                                 </a>
                             )}
                             {project.repoLink && (
-                                <a href={project.repoLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors" title="View Code">
+                                <a href={project.repoLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="View Code">
                                     <FaGithub size={16} />
                                 </a>
                             )}
                         </div>
 
-                        <Link to={`/project/${project.id}`} className="flex items-center gap-1 text-sm font-bold text-[#7f5eff] hover:text-white transition-colors group-hover:translate-x-1 duration-300">
+                        <Link to={`/project/${project.id}`} className="flex items-center gap-1 text-sm font-bold text-[#ffbd39] hover:text-white transition-colors group-hover:translate-x-1 duration-300">
                             Details <FaArrowRight size={12} />
                         </Link>
                     </div>
@@ -84,17 +84,17 @@ const ProjectCard = ({ project, index }) => {
     );
 };
 
-const Projects = ({ projects, showViewMore = false }) => { // Add prop
+const Projects = ({ projects, showViewMore = false }) => {
     const gridRef = useRef(null);
 
     return (
-        <section name="projects" className="py-24 bg-black relative overflow-hidden">
+        <section name="projects" className="py-24 bg-[#050505] relative overflow-hidden">
             <ParticleBackground id="projects-particles" />
 
             {/* Header */}
-            <div className="text-center relative z-10 mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Featured Projects</h2>
-                <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+            <div className="watermark-container mb-20 relative z-10">
+                <span className="watermark-bg">PORTFOLIO</span>
+                <h2 className="watermark-fg">Featured Projects</h2>
             </div>
 
             {/* Grid */}
@@ -106,17 +106,12 @@ const Projects = ({ projects, showViewMore = false }) => { // Add prop
 
             {/* Conditional Button Rendering */}
             {showViewMore && projects.length >= 6 && (
-                <div className="flex flex-wrap justify-center gap-4 mt-12 relative z-10">
-                    {/* projects.length check is redundant here but keeps structure generic if needed, 
-                        but since it's the only button now, the parent check handles it. 
-                        I will remove the inner check to simplify. */ }
+                <div className="flex flex-wrap justify-center gap-4 mt-16 relative z-10">
                     <Link to="/projects">
-                        <button className="bg-[#7f5eff] hover:bg-[#a68aff] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl">
+                        <button className="bg-[#ffbd39] hover:bg-amber-400 text-black font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,189,57,0.2)] hover:shadow-[0_0_35px_rgba(255,189,57,0.5)] transform hover:-translate-y-0.5">
                             View More Projects
                         </button>
                     </Link>
-
-
                 </div>
             )}
         </section>

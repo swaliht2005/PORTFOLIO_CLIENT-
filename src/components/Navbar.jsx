@@ -126,25 +126,30 @@ const Navbar = () => {
             <PillNav
                 logo={
                     <RouterLink to="/">
-                        <img
-                        src={profileLogo}
-                        alt="Swalih"
-                        className="w-10 h-10 rounded-full object-cover"
-                        />
+                        <div className="flex items-center gap-2">
+                            <img
+                                src={profileLogo}
+                                alt="Swalih"
+                                className="w-10 h-10 rounded-full object-cover border border-[#ffbd39]"
+                            />
+                            <span className="font-bold text-white text-lg tracking-wider hidden sm:inline">
+                                S<span className="text-[#ffbd39]">WALIH</span>
+                            </span>
+                        </div>
                     </RouterLink>
-                    }
+                }
                 logoAlt="Swalih"
                 items={navItems}
                 activeHref={activeSection}
                 className={`fixed w-full z-50 transition-all duration-300 ${
                     scrolled
-                        ? 'bg-black/90 backdrop-blur-md shadow-lg'
+                        ? 'bg-[#050505]/95 backdrop-blur-md shadow-lg border-b border-white/5'
                         : 'bg-transparent'
                 }`}
-                baseColor="#e0e0e0"
-                pillColor="#7f5eff"
-                hoveredPillTextColor="#ffffff"
-                pillTextColor="#ffffff"
+                baseColor="#a9adb8"
+                pillColor="#ffbd39"
+                hoveredPillTextColor="#000000"
+                pillTextColor="#000000"
                 onMobileMenuClick={() => setIsOpen(!isOpen)}
             />
 
@@ -155,7 +160,7 @@ const Navbar = () => {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="md:hidden fixed top-20 left-0 w-full bg-black/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 overflow-hidden"
+                        className="md:hidden fixed top-20 left-0 w-full bg-[#050505]/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 overflow-hidden"
                     >
                         <div className="flex flex-col py-6 space-y-2">
                             {navItems.map((link) => (
@@ -169,7 +174,7 @@ const Navbar = () => {
                                     onClick={() => setIsOpen(false)}
                                     className={`py-4 px-8 text-lg font-medium transition-all border-l-4 ${
                                         activeSection === link.href
-                                            ? 'border-[#7f5eff] text-white bg-white/5'
+                                            ? 'border-[#ffbd39] text-[#ffbd39] bg-white/5'
                                             : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
                                     }`}
                                 >

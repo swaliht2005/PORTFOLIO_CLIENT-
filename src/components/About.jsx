@@ -1,6 +1,16 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import ParticleBackground from './ParticleBackground';
+import { 
+    FaPalette, 
+    FaFigma, 
+    FaReact, 
+    FaCss3Alt, 
+    FaWordpress,
+    FaSitemap,
+    FaSearch,
+    FaProjectDiagram
+} from 'react-icons/fa';
 
 const About = () => {
     const [ref, inView] = useInView({
@@ -9,35 +19,38 @@ const About = () => {
     });
 
     const skills = [
-        "UI/UX Design", "Figma", "React.js", "Tailwind CSS",
-        "Node.js", "Express.js", "MongoDB", "WordPress"
+        { name: "UI/UX", icon: FaPalette },
+        { name: "Figma", icon: FaFigma },
+        { name: "Wireframing", icon: FaSitemap },
+        { name: "Prototyping", icon: FaProjectDiagram },
+        { name: "User Research", icon: FaSearch },
+        { name: "React.js", icon: FaReact },
+        { name: "Tailwind", icon: FaCss3Alt },
+        { name: "WordPress", icon: FaWordpress }
     ];
 
     return (
-        <section name="about" className="py-24 bg-black relative overflow-hidden">
+        <section name="about" className="py-24 bg-[#050505] relative overflow-hidden">
             <ParticleBackground id="about-particles" />
 
             <div className="container mx-auto px-6 relative z-10">
-                <motion.div
-                    ref={ref}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">About Me</h2>
-                    <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
-                </motion.div>
+                {/* Watermark Section Header */}
+                <div className="watermark-container mb-20">
+                    <span className="watermark-bg">ABOUT</span>
+                    <h2 className="watermark-fg">About Me</h2>
+                </div>
 
-                <div className="grid md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+                <div className="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+                    {/* Bio Column */}
                     <motion.div
+                        ref={ref}
                         initial={{ opacity: 0, x: -50 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        <h3 className="text-3xl font-bold text-white mb-6 leading-relaxed">
+                        <h3 className="text-3xl font-bold text-white mb-6 leading-normal">
                             UI/UX Designer Bridging <br />
-                            <span className="text-[#7f5eff]">Design & Development</span>
+                            <span className="text-[#ffbd39] filter drop-shadow-[0_0_10px_rgba(255,189,57,0.2)]">Design & Development</span>
                         </h3>
                         <p className="text-gray-400 text-lg leading-relaxed mb-6">
                             I design user-first interfaces and build them with clean, responsive front-end code.
@@ -46,25 +59,34 @@ const About = () => {
                         </p>
                         <p className="text-gray-400 text-lg leading-relaxed">
                             Whether it's a web application, a mobile app, or a marketing site, I focus on aesthetics,
-                            usability, and performance.
+                            usability, and performance. Let's make something amazing together!
                         </p>
                     </motion.div>
 
+                    {/* Toolkit Column (Hex Grid) */}
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.4 }}
-                        className="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300"
+                        className="bg-white/[0.02] backdrop-blur-md p-10 rounded-3xl border border-white/5 hover:border-[#ffbd39]/10 transition-all duration-500 relative overflow-hidden"
                     >
-                        <h4 className="text-xl font-bold text-white mb-6">My Toolkit</h4>
-                        <div className="flex flex-wrap gap-3">
+                        {/* Subtle gold glow behind grid */}
+                        <div className="absolute -right-12 -top-12 -z-10 bg-[#ffbd39]/5 w-40 h-40 rounded-full blur-[40px]"></div>
+
+                        <h4 className="text-xl font-bold text-white mb-10 text-center uppercase tracking-widest text-[#ffbd39]">
+                            My Tech Toolkit
+                        </h4>
+
+                        <div className="hex-grid">
                             {skills.map((skill, index) => (
-                                <span
-                                    key={skill}
-                                    className="px-4 py-2 bg-[#1a1a2e] text-gray-300 rounded-lg text-sm font-medium border border-white/5 hover:border-[#7f5eff] hover:text-[#7f5eff] transition-colors cursor-default"
-                                >
-                                    {skill}
-                                </span>
+                                <div key={index} className="hex-item">
+                                    <div className="hex-inner">
+                                        <skill.icon size={28} />
+                                        <span className="text-[10px] font-bold text-white uppercase tracking-wider text-center px-1">
+                                            {skill.name}
+                                        </span>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     </motion.div>

@@ -1,15 +1,154 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --bg-dark: #050505;
+    --primary-gold: #ffbd39;
+    --primary-glow: rgba(255, 189, 57, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-white: #ffffff;
+    --text-grey: #a9adb8;
+}
+
 body {
-    background-color: #000000;
-    /* Full black background */
-    color: #ffffff;
-    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-grey);
+    font-family: 'Inter', 'Poppins', sans-serif;
     overflow-x: hidden;
+}
+
+/* Watermark Text */
+.watermark-container {
+    position: relative;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.watermark-bg {
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .watermark-bg {
+        font-size: 7.5rem;
+    }
+}
+
+.watermark-fg {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text-white);
+    position: relative;
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.watermark-fg::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
+
+/* Hexagon Grid Layout */
+.hex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hex-item {
+    width: 120px;
+    height: 138px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hex-inner {
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hex-item:hover {
+    transform: translateY(-6px) scale(1.05);
+    filter: drop-shadow(0 10px 20px rgba(255, 189, 57, 0.25));
+}
+
+.hex-item:hover .hex-inner {
+    background: linear-gradient(135deg, rgba(255, 189, 57, 0.2), rgba(255, 189, 57, 0.05));
+    border-color: var(--primary-gold);
+}
+
+.hex-inner svg {
+    color: var(--primary-gold);
+    transition: transform 0.4s ease;
+}
+
+.hex-item:hover .hex-inner svg {
+    transform: scale(1.15);
+}
+
+/* Shine effect animation */
+.shine-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-effect::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 45%,
+        rgba(255, 189, 57, 0.1) 50%,
+        transparent 55%
+    );
+    transform: rotate(45deg);
+    transition: none;
+    opacity: 0;
+}
+
+.shine-effect:hover::before {
+    opacity: 1;
+    transition: transform 0.8s ease-in-out;
+    transform: translate(50%, 50%) rotate(45deg);
 }
 
 /* React Quill Customization for Dark Theme Toolbar */
@@ -23,7 +162,6 @@ body {
 .custom-quill .ql-container {
     border-radius: 0 0 8px 8px;
     font-size: 1.125rem;
-    /* Text lg */
 }
 
 /* Toolbar icons to white */
@@ -47,4 +185,4 @@ body {
 
 .custom-quill .ql-editor {
     min-height: 200px;
-}
+}

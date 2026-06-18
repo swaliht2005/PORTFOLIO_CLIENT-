@@ -1,118 +1,73 @@
 import React from "react";
 import { 
-  MessageCircle, 
-  Linkedin, 
-  Instagram, 
-  Palette, 
-  Mail, 
-  ArrowUpRight,
-  Copy
-} from "lucide-react";
-import NavebarTwo from "../components/NavebarTwo";
+  FaPhone, 
+  FaEnvelope, 
+  FaLinkedinIn, 
+  FaBehance 
+} from "react-icons/fa";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-const ContactCard = ({ icon: Icon, label, title, href, color }) => (
+const ContactCard = ({ icon: Icon, label, value, href }) => (
   <a
     href={href}
     target="_blank"
     rel="noreferrer"
-    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all hover:border-zinc-700 hover:bg-zinc-900"
+    className="group relative bg-[#0e0e0e] border border-white/5 hover:border-[#ffbd39]/30 transition-all duration-500 p-8 rounded-3xl flex flex-col items-center text-center overflow-hidden"
   >
-    <div className="flex items-start justify-between">
-      <div className={`rounded-xl bg-zinc-800 p-3 text-white transition-colors group-hover:bg-white group-hover:text-black`}>
-        <Icon size={24} />
+    {/* Diamond badge */}
+    <div className="relative mb-8 mt-4">
+      <div className="w-14 h-14 bg-gradient-to-tr from-[#ffbd39] to-amber-300 rounded-2xl rotate-45 flex items-center justify-center shadow-[0_0_20px_rgba(255,189,57,0.3)] transition-transform duration-500 group-hover:scale-110">
+        <div className="-rotate-45 text-black">
+          <Icon size={20} />
+        </div>
       </div>
-      <ArrowUpRight className="text-zinc-600 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white" size={20} />
     </div>
-    
-    <div>
-      <p className="text-xs font-medium uppercase tracking-widest text-zinc-500">{label}</p>
-      <h3 className="mt-1 text-xl font-semibold text-white">{title}</h3>
-    </div>
+
+    <h3 className="text-lg font-bold text-white mb-2 tracking-wide uppercase">{label}</h3>
+    <p className="text-gray-400 text-sm break-all font-medium max-w-full leading-relaxed px-2 transition-colors group-hover:text-gray-300">
+      {value}
+    </p>
   </a>
 );
 
 const ContactPage = () => {
-  const email = "muhammedswalih8095@gmail.com";
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(email);
-    alert("Email copied to clipboard!");
-  };
-
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-zinc-100">
-      <NavebarTwo />
+    <div className="min-h-screen bg-[#050505] text-zinc-100 flex flex-col justify-between">
+      <Navbar />
 
-      <main className="mx-auto max-w-5xl px-6 pt-32 pb-20">
-        {/* Header Section */}
-        <header className="mb-16">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6">
-            Let's build <br /> 
-            <span className="text-zinc-500 italic">something great.</span>
-          </h1>
-          <p className="max-w-xl text-lg text-zinc-400 leading-relaxed">
-            I’m always open to discussing new projects, creative ideas, or 
-            opportunities to be part of your visions.
-          </p>
-        </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
-          {/* Email Card (Spans 2 columns) */}
-          <div className="md:col-span-2 relative flex flex-col justify-between overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-black p-8">
-            <div>
-              <Mail className="text-blue-500 mb-6" size={32} />
-              <h2 className="text-3xl font-bold text-white mb-2">Email me directly</h2>
-              <p className="text-zinc-500">I usually respond within 24 hours.</p>
-            </div>
-            
-            <div className="mt-12 flex items-center justify-between rounded-xl bg-black/50 border border-zinc-800 p-4">
-              <span className="font-mono text-zinc-300 md:text-lg truncate">{email}</span>
-              <button 
-                onClick={copyToClipboard}
-                className="flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium hover:bg-zinc-700 transition"
-              >
-                <Copy size={16} /> Copy
-              </button>
-            </div>
-          </div>
-
-          {/* Social Links Grid */}
-          <ContactCard 
-            icon={Linkedin} 
-            label="Professional" 
-            title="LinkedIn" 
-            href="https://www.linkedin.com/in/muhammed-swalih-3a12b931a/" 
-          />
-          <ContactCard 
-            icon={MessageCircle} 
-            label="Fast Chat" 
-            title="WhatsApp" 
-            href="https://wa.me/8095635402" 
-          />
-          <ContactCard 
-            icon={Palette} 
-            label="Portfolio" 
-            title="Behance" 
-            href="https://www.behance.net/muhammedswalih43" 
-          />
-          <ContactCard 
-            icon={Instagram} 
-            label="Social" 
-            title="Instagram" 
-            href="https://www.instagram.com/swalee_ui.ux/" 
-          />
-
+      <main className="mx-auto w-full max-w-6xl px-6 pt-36 pb-24 flex-grow flex flex-col justify-center">
+        {/* Title */}
+        <div className="watermark-container mb-16 relative z-10">
+          <span className="watermark-bg">CONTACT</span>
+          <h2 className="watermark-fg">Get In Touch</h2>
         </div>
 
-        {/* Location/Status Footer */}
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-zinc-900 pt-12">
-          <div className="flex items-center gap-4">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-            <span className="text-sm font-medium text-zinc-400">Available for new projects</span>
-          </div>
-          <p className="text-sm text-zinc-600">Based in [Your City, Timezone]</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+          <ContactCard 
+            icon={FaPhone} 
+            label="Phone" 
+            value="+91 8095635402" 
+            href="tel:+918095635402"
+          />
+          <ContactCard 
+            icon={FaEnvelope} 
+            label="Email" 
+            value="salumuhammadswalih@gmail.com" 
+            href="mailto:salumuhammadswalih@gmail.com"
+          />
+          <ContactCard 
+            icon={FaLinkedinIn} 
+            label="LinkedIn" 
+            value="linkedin.com/in/muhammed-swalih-3a12b931a/" 
+            href="https://www.linkedin.com/in/muhammed-swalih-3a12b931a/"
+          />
+          <ContactCard 
+            icon={FaBehance} 
+            label="Behance" 
+            value="behance.net/muhammedswalih43" 
+            href="https://www.behance.net/muhammedswalih43"
+          />
         </div>
       </main>
 
