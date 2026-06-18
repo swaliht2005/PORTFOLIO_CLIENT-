@@ -1,9 +1,5 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import React, { useState } from 'react';
 import { Link } from 'react-scroll';
-
-gsap.registerPlugin(useGSAP);
 
 const PillNav = ({
     logo,
@@ -11,72 +7,17 @@ const PillNav = ({
     items,
     activeHref,
     className,
-    ease = "power2.easeOut",
     baseColor = "#000000",
     pillColor = "#ffffff",
-    hoveredPillTextColor = "#ffffff",
     pillTextColor = "#000000",
-    onMobileMenuClick
+    onMobileMenuClick,
+    mobileMenuOpen = false
 }) => {
-    const containerRef = useRef(null);
-    const pillRef = useRef(null);
-    const itemsRef = useRef([]);
-    const [activeItem, setActiveItem] = useState(null);
-
-    // Find active item index based on activeHref
-    useEffect(() => {
-        const index = items.findIndex(item => item.href === activeHref);
-        if (index !== -1) {
-            setActiveItem(index);
-        }
-    }, [activeHref, items]);
-
-    const { contextSafe } = useGSAP({ scope: containerRef });
-
-    const movePill = contextSafe((target, duration = 0.5) => {
-        if (!target || !pillRef.current) return;
-
-        const { offsetLeft, offsetWidth } = target;
-
-        gsap.to(pillRef.current, {
-            x: offsetLeft,
-            width: offsetWidth,
-            duration: duration,
-            ease: ease,
-            opacity: 1
-        });
-    });
-
-    const handleMouseEnter = (index, e) => {
-        movePill(e.target);
-        // Animate text color if needed
-    };
-
-    const handleMouseLeave = () => {
-        if (activeItem !== null && itemsRef.current[activeItem]) {
-            movePill(itemsRef.current[activeItem]);
-        } else {
-            gsap.to(pillRef.current, { opacity: 0, duration: 0.3 });
-        }
-    };
-
-    // Initial positioning
-    useLayoutEffect(() => {
-        if (activeItem !== null && itemsRef.current[activeItem]) {
-            // Immediate set for initial load
-            const target = itemsRef.current[activeItem];
-            gsap.set(pillRef.current, {
-                x: target.offsetLeft,
-                width: target.offsetWidth,
-                opacity: 1
-            });
-        } else {
-            gsap.set(pillRef.current, { opacity: 0 });
-        }
-    }, [activeItem]);
+    const [hoveredItem, setHoveredItem] = useState(null);
+    const activeItem = items.findIndex(item => item.href === activeHref);
 
     return (
-        <nav className={`${className} flex items-center justify-between py-4 px-6 md:px-10`} ref={containerRef} style={{ color: baseColor }}>
+        <nav className={`${className} flex items-center justify-between py-4 px-6 md:px-10`} style={{ color: baseColor }} aria-label="Primary navigation">
             {/* Logo */}
             <div className="flex items-center">
                 {logo ? (
@@ -91,14 +32,7 @@ const PillNav = ({
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex relative items-center bg-white/5 backdrop-blur-sm rounded-full p-2 border border-white/10" onMouseLeave={handleMouseLeave}>
-                {/* The Pill */}
-                <div
-                    ref={pillRef}
-                    className="absolute top-2 bottom-2 bg-white rounded-full pointer-events-none z-0"
-                    style={{ backgroundColor: pillColor, height: 'calc(100% - 16px)' }}
-                />
-
+            <div className="hidden md:flex relative items-center gap-1 bg-white/5 backdrop-blur-sm rounded-full p-2 border border-white/10" onMouseLeave={() => setHoveredItem(null)}>
                 {items.map((item, index) => (
                     <Link
                         key={index}
@@ -107,26 +41,33 @@ const PillNav = ({
                         duration={500}
                         offset={-100}
                         spy={true}
-                        onSetActive={() => setActiveItem(index)}
-                        className="relative z-10 px-6 py-2 text-sm font-medium cursor-pointer transition-colors duration-300"
-
-                        ref={el => itemsRef.current[index] = el}
-                        onMouseEnter={(e) => handleMouseEnter(index, e)}
-                        style={{ color: activeItem === index ? hoveredPillTextColor : baseColor }}
+                        aria-current={activeItem === index ? 'page' : undefined}
+                        className="relative z-10 px-6 py-2 text-sm font-medium cursor-pointer rounded-full transition-[background-color,color,transform] duration-300"
+                        onMouseEnter={() => setHoveredItem(index)}
+                        style={{
+                            backgroundColor: hoveredItem === index || activeItem === index ? pillColor : 'transparent',
+                            color: hoveredItem === index || activeItem === index ? pillTextColor : baseColor
+                        }}
                     >
-                        <span className="mix-blend-exclusion">{item.label}</span>
+                        <span>{item.label}</span>
                     </Link>
                 ))}
             </div>
 
             {/* Mobile Menu Trigger (Placeholder) */}
-            <div className="md:hidden" onClick={onMobileMenuClick}>
+            <button
+                type="button"
+                className="md:hidden text-current"
+                onClick={onMobileMenuClick}
+                aria-label="Open navigation menu"
+                aria-expanded={mobileMenuOpen}
+            >
                 <div className="space-y-2 cursor-pointer">
                     <div className="w-8 h-0.5 bg-current"></div>
                     <div className="w-8 h-0.5 bg-current"></div>
                     <div className="w-8 h-0.5 bg-current"></div>
                 </div>
-            </div>
+            </button>
         </nav>
     );
 };

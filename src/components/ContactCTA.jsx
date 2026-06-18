@@ -1,20 +1,25 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Download, FileText } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Mail } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 
+const MotionDiv = motion.div;
+
 const ContactCTA = () => {
+    const shouldReduceMotion = useReducedMotion();
+
     return (
         <section className="w-full py-24 px-4 md:px-8 bg-[#050505] flex justify-center relative overflow-hidden">
             {/* Soft gold backdrop glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 bg-[#ffbd39]/5 w-[600px] h-[300px] rounded-full blur-[120px] pointer-events-none"></div>
 
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
+            <MotionDiv
+                layout
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="w-full max-w-5xl rounded-[2.5rem] overflow-hidden relative p-10 md:p-16 text-center bg-white/[0.02] border border-white/5 hover:border-[#ffbd39]/20 transition-all duration-500 backdrop-blur-md"
+                transition={{ duration: shouldReduceMotion ? 0.01 : 0.8 }}
+                className="motion-transform w-full max-w-5xl rounded-[2.5rem] overflow-hidden relative p-10 md:p-16 text-center bg-white/[0.02] border border-white/5 hover:border-[#ffbd39]/20 transition-all duration-500 backdrop-blur-md"
             >
                 {/* Background glow effects */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -58,7 +63,7 @@ const ContactCTA = () => {
                         </a>
                     </div>
                 </div>
-            </motion.div>
+            </MotionDiv>
         </section>
     );
 };

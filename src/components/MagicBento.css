@@ -31,6 +31,7 @@
     font-weight: 300;
     overflow: hidden;
     transition: all 0.3s ease;
+    will-change: transform;
 
     --glow-x: 50%;
     --glow-y: 50%;
@@ -81,6 +82,7 @@
 .particle-container {
     position: relative;
     overflow: hidden;
+    will-change: transform;
 }
 
 .particle::before {
@@ -124,5 +126,19 @@
 @media (min-width: 1024px) {
     .card-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .magic-bento-card,
+    .particle-container,
+    .global-spotlight {
+        will-change: auto;
+    }
+
+    .magic-bento-card:hover,
+    .particle-container:hover {
+        transform: none;
+        box-shadow: none;
     }
 }
