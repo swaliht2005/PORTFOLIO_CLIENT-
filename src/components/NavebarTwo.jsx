@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { AnimatePresence, motion } from 'framer-motion';
 import siteData from '../data/site';
 import swalihProfile from '../assets/swalih_profile.jpg';
 
 const NavbarTwo = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [profileLogo, setProfileLogo] = useState(siteData.profileLogo || swalihProfile);
+    const [profileLogo] = useState(siteData.profileLogo || swalihProfile);
     const location = useLocation();
 
     useEffect(() => {

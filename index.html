@@ -6,8 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Swalih Portfolio</title>
   </head>
-  <body>
-    <div id="root"></div>
+  <body style="background-color: #050505;">
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 40px; height: 40px; border: 3px solid rgba(255,189,57,0.3); border-radius: 50%; border-top-color: #ffbd39; animation: spin 1s ease-in-out infinite;"></div>
+        <style>
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        </style>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

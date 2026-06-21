@@ -61,10 +61,10 @@ const ModernProfileCard = ({ image }) => {
 
                     {/* Social Links */}
                     <div className="flex gap-6 mt-auto">
-                        <SocialLink Icon={FaGithub} href="https://github.com/swaliht2005/" />
-                        <SocialLink Icon={FaLinkedin} href="https://www.linkedin.com/in/muhammed-swalih-3a12b931a/" />
-                        <SocialLink Icon={FaBehance} href="https://www.behance.net/muhammedswalih43" />
-                        <SocialLink Icon={FaInstagram} href="https://www.instagram.com/swalee_ui.ux/" />
+                        <SocialLink Icon={FaGithub} href="https://github.com/swaliht2005/" label="GitHub" />
+                        <SocialLink Icon={FaLinkedin} href="https://www.linkedin.com/in/muhammed-swalih-3a12b931a/" label="LinkedIn" />
+                        <SocialLink Icon={FaBehance} href="https://www.behance.net/muhammedswalih43" label="Behance" />
+                        <SocialLink Icon={FaInstagram} href="https://www.instagram.com/swalee_ui.ux/" label="Instagram" />
                     </div>
                 </div>
             </div>
@@ -72,11 +72,12 @@ const ModernProfileCard = ({ image }) => {
     );
 };
 
-const SocialLink = ({ Icon, href }) => (
+const SocialLink = ({ Icon, href, label }) => (
     <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label={label}
         className="text-gray-400 hover:text-[#ffbd39] transform hover:scale-120 hover:-translate-y-1 transition-all duration-300 p-2 hover:bg-white/5 rounded-full"
     >
         <Icon size={20} />

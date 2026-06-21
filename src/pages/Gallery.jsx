@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import galleryImages from "../data/gallery";
 import Navbar from "../components/Navbar";
@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 
 const Gallery = () => {
     const [selectedImage, setSelectedImage] = useState(null);
+    const shouldReduceMotion = useReducedMotion();
 
     return (
         <div className="min-h-screen bg-black text-gray-100 font-sans selection:bg-purple-500/30">
@@ -29,7 +30,7 @@ const Gallery = () => {
                         <motion.div
                             key={img.id}
                             layout
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="break-inside-avoid relative group rounded-xl overflow-hidden bg-gray-900 cursor-zoom-in"
                             onClick={() => setSelectedImage(img)}
@@ -71,15 +72,17 @@ const Gallery = () => {
                         onClick={() => setSelectedImage(null)}
                     >
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
+                            layout
+                            initial={{ scale: shouldReduceMotion ? 1 : 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
+                            exit={{ scale: shouldReduceMotion ? 1 : 0.9, opacity: 0 }}
                             className="relative max-w-7xl max-h-[90vh] flex flex-col items-center"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <img
                                 src={selectedImage.imageUrl}
                                 alt={selectedImage.title}
+                                loading="lazy"
                                 className="max-w-full max-h-[85vh] object-contain rounded-md shadow-2xl"
                             />
 

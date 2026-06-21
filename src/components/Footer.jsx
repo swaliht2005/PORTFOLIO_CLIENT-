@@ -21,10 +21,10 @@ const Footer = () => {
                             Crafting seamless digital experiences with pixel-perfect design and robust code. Let's create something extraordinary.
                         </p>
                         <div className="flex gap-4">
-                            <SocialLink Icon={FaGithub} href="https://github.com/swaliht2005/" />
-                            <SocialLink Icon={FaLinkedin} href="https://www.linkedin.com/in/muhammed-swalih-3a12b931a/" />
-                            <SocialLink Icon={FaBehance} href="https://www.behance.net/muhammedswalih43" />
-                            <SocialLink Icon={FaInstagram} href="https://www.instagram.com/swalee_ui.ux/" />
+                            <SocialLink Icon={FaGithub} href="https://github.com/swaliht2005/" label="GitHub" />
+                            <SocialLink Icon={FaLinkedin} href="https://www.linkedin.com/in/muhammed-swalih-3a12b931a/" label="LinkedIn" />
+                            <SocialLink Icon={FaBehance} href="https://www.behance.net/muhammedswalih43" label="Behance" />
+                            <SocialLink Icon={FaInstagram} href="https://www.instagram.com/swalee_ui.ux/" label="Instagram" />
                         </div>
                     </div>
 
@@ -71,7 +71,7 @@ const Footer = () => {
                 </div>
 
                 {/* Copyright */}
-                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
                     <p>&copy; {new Date().getFullYear()} Muhammed Swalih. All rights reserved.</p>
                     <p className="mt-2 md:mt-0">
                         Designed & Built with <span className="text-[#ffbd39]">♥</span>
@@ -82,11 +82,12 @@ const Footer = () => {
     );
 };
 
-const SocialLink = ({ Icon, href }) => (
+const SocialLink = ({ Icon, href, label }) => (
     <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label={label}
         className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#ffbd39] hover:text-black hover:border-transparent hover:shadow-[0_0_15px_rgba(255,189,57,0.4)] transform hover:-translate-y-1 transition-all duration-300"
     >
         <Icon size={18} />

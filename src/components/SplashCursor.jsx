@@ -690,8 +690,8 @@ function SplashCursor({
     }
 
     function resizeCanvas() {
-      let width = scaleByPixelRatio(canvas.clientWidth);
-      let height = scaleByPixelRatio(canvas.clientHeight);
+      let width = scaleByPixelRatio(window.innerWidth);
+      let height = scaleByPixelRatio(window.innerHeight);
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;
         canvas.height = height;
@@ -1029,7 +1029,6 @@ function SplashCursor({
     });
 
     updateFrame();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     SIM_RESOLUTION,
     DYE_RESOLUTION,

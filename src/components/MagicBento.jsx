@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import './MagicBento.css';
 
@@ -59,11 +59,12 @@ export const ParticleCard = ({
     const memoizedParticles = useRef([]);
     const particlesInitialized = useRef(false);
     const magnetismAnimationRef = useRef(null);
+    const rectCacheRef = useRef({ width: 0, height: 0, left: 0, top: 0 });
 
     const initializeParticles = useCallback(() => {
         if (particlesInitialized.current || !cardRef.current) return;
 
-        const { width, height } = cardRef.current.getBoundingClientRect();
+        const { width, height } = rectCacheRef.current;
         memoizedParticles.current = Array.from({ length: particleCount }, () =>
             createParticleElement(Math.random() * width, Math.random() * height, glowColor)
         );
@@ -134,6 +135,24 @@ export const ParticleCard = ({
 
         const element = cardRef.current;
 
+        const updateRect = () => {
+            if (element) {
+                const rect = element.getBoundingClientRect();
+                rectCacheRef.current = {
+                    width: rect.width,
+                    height: rect.height,
+                    left: rect.left,
+                    top: rect.top
+                };
+            }
+        };
+
+        const ro = new ResizeObserver(() => updateRect());
+        ro.observe(element);
+        window.addEventListener('scroll', updateRect, { passive: true });
+        window.addEventListener('resize', updateRect, { passive: true });
+        updateRect();
+
         const handleMouseEnter = () => {
             isHoveredRef.current = true;
             animateParticles();
@@ -175,7 +194,7 @@ export const ParticleCard = ({
         const handleMouseMove = e => {
             if (!enableTilt && !enableMagnetism) return;
 
-            const rect = element.getBoundingClientRect();
+            const rect = rectCacheRef.current;
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
@@ -210,7 +229,7 @@ export const ParticleCard = ({
         const handleClick = e => {
             if (!clickEffect) return;
 
-            const rect = element.getBoundingClientRect();
+            const rect = rectCacheRef.current;
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
@@ -263,6 +282,9 @@ export const ParticleCard = ({
             element.removeEventListener('mouseleave', handleMouseLeave);
             element.removeEventListener('mousemove', handleMouseMove);
             element.removeEventListener('click', handleClick);
+            window.removeEventListener('scroll', updateRect);
+            window.removeEventListener('resize', updateRect);
+            ro.disconnect();
             clearAllParticles();
         };
     }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor]);
@@ -287,6 +309,7 @@ export const GlobalSpotlight = ({
 }) => {
     const spotlightRef = useRef(null);
     const isInsideSection = useRef(false);
+    const rectCacheRef = useRef({ grid: null, cards: [] });
 
     useEffect(() => {
         if (disableAnimations || !gridRef?.current || !enabled) return;
@@ -315,16 +338,29 @@ export const GlobalSpotlight = ({
         document.body.appendChild(spotlight);
         spotlightRef.current = spotlight;
 
+        const updateRects = () => {
+            if (!gridRef.current) return;
+            rectCacheRef.current.grid = gridRef.current.getBoundingClientRect();
+            
+            const cards = Array.from(gridRef.current.querySelectorAll('.magic-bento-card'));
+            rectCacheRef.current.cards = cards.map(card => ({
+                element: card,
+                rect: card.getBoundingClientRect()
+            }));
+        };
+
+        window.addEventListener('scroll', updateRects, { passive: true });
+        window.addEventListener('resize', updateRects, { passive: true });
+        updateRects();
+
         const handleMouseMove = e => {
             if (!spotlightRef.current || !gridRef.current) return;
 
-            const section = gridRef.current.closest('.bento-section');
-            const rect = section?.getBoundingClientRect();
-            const mouseInside =
-                rect && e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
-
+            const gridRect = rectCacheRef.current.grid;
+            const mouseInside = gridRect && e.clientX >= gridRect.left && e.clientX <= gridRect.right && e.clientY >= gridRect.top && e.clientY <= gridRect.bottom;
             isInsideSection.current = mouseInside || false;
-            const cards = gridRef.current.querySelectorAll('.magic-bento-card');
+
+            const cardsCache = rectCacheRef.current.cards;
 
             if (!mouseInside) {
                 gsap.to(spotlightRef.current, {
@@ -332,8 +368,8 @@ export const GlobalSpotlight = ({
                     duration: 0.3,
                     ease: 'power2.out'
                 });
-                cards.forEach(card => {
-                    card.style.setProperty('--glow-intensity', '0');
+                cardsCache.forEach(({ element }) => {
+                    element.style.setProperty('--glow-intensity', '0');
                 });
                 return;
             }
@@ -341,9 +377,8 @@ export const GlobalSpotlight = ({
             const { proximity, fadeDistance } = calculateSpotlightValues(spotlightRadius);
             let minDistance = Infinity;
 
-            cards.forEach(card => {
-                const cardElement = card;
-                const cardRect = cardElement.getBoundingClientRect();
+            cardsCache.forEach(({ element, rect: cardRect }) => {
+                const cardElement = element;
                 const centerX = cardRect.left + cardRect.width / 2;
                 const centerY = cardRect.top + cardRect.height / 2;
                 const distance =
@@ -403,6 +438,8 @@ export const GlobalSpotlight = ({
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseleave', handleMouseLeave);
+            window.removeEventListener('scroll', updateRects);
+            window.removeEventListener('resize', updateRects);
             spotlightRef.current?.parentNode?.removeChild(spotlightRef.current);
         };
     }, [gridRef, disableAnimations, enabled, spotlightRadius, glowColor]);

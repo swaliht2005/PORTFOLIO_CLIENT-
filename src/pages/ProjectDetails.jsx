@@ -62,6 +62,7 @@ const ModuleRenderer = ({ module }) => {
                 key={idx}
                 src={url}
                 alt={module.content.caption || `Project visual part ${idx + 1}`}
+                loading="lazy"
                 className={`w-full block select-none
                   ${isFirst ? 'rounded-t-2xl' : ''}
                   ${isLast ? 'rounded-b-2xl' : ''}
@@ -266,6 +267,7 @@ const ProjectDetails = () => {
                   <img
                     src={img.url}
                     alt={img.caption || `Gallery ${idx + 1}`}
+                    loading="lazy"
                     className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                   />
                   {img.caption && (

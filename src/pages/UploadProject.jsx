@@ -189,7 +189,7 @@ ${JSON.stringify(projectEntry, null, 2)}\n`;
             {previewUrl && (
               <div className="rounded-3xl border border-white/10 bg-[#08080e] p-4">
                 <p className="text-sm text-gray-400 mb-3">Image preview</p>
-                <img src={previewUrl} alt="Preview" className="w-full rounded-3xl object-cover" />
+                <img src={previewUrl} alt="Preview" loading="lazy" className="w-full rounded-3xl object-cover" />
               </div>
             )}
 

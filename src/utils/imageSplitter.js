@@ -11,7 +11,7 @@ export const splitImage = async (file, maxHeight = 4000) => {
         return [file];
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const img = new Image();
         const objectUrl = URL.createObjectURL(file);
 
@@ -27,7 +27,6 @@ export const splitImage = async (file, maxHeight = 4000) => {
 
             // 3. Split the image
             const chunks = [];
-            const timestamp = Date.now();
             const totalChunks = Math.ceil(height / maxHeight);
             
             console.log(`Splitting image (${width}x${height}) into ${totalChunks} chunks...`);

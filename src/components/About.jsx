@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import ParticleBackground from './ParticleBackground';
 import { 
@@ -17,6 +17,7 @@ const About = () => {
         triggerOnce: true,
         threshold: 0.1,
     });
+    const shouldReduceMotion = useReducedMotion();
 
     const skills = [
         { name: "UI/UX", icon: FaPalette },
@@ -44,7 +45,8 @@ const About = () => {
                     {/* Bio Column */}
                     <motion.div
                         ref={ref}
-                        initial={{ opacity: 0, x: -50 }}
+                        layout
+                        initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -50 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
@@ -65,7 +67,8 @@ const About = () => {
 
                     {/* Toolkit Column (Hex Grid) */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
+                        layout
+                        initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 50 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.4 }}
                         className="bg-white/[0.02] backdrop-blur-md p-10 rounded-3xl border border-white/5 hover:border-[#ffbd39]/10 transition-all duration-500 relative overflow-hidden"

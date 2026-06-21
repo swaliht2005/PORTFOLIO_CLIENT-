@@ -41,6 +41,7 @@ const ProfileCardComponent = ({
 
     const enterTimerRef = useRef(null);
     const leaveRafRef = useRef(null);
+    const shellRectRef = useRef({ width: 1, height: 1, left: 0, top: 0 });
 
     const tiltEngine = useMemo(() => {
         if (!enableTilt) return null;
@@ -63,8 +64,8 @@ const ProfileCardComponent = ({
             const wrap = wrapRef.current;
             if (!shell || !wrap) return;
 
-            const width = shell.clientWidth || 1;
-            const height = shell.clientHeight || 1;
+            const width = shellRectRef.current.width || 1;
+            const height = shellRectRef.current.height || 1;
 
             const percentX = clamp((100 / width) * x);
             const percentY = clamp((100 / height) * y);
@@ -134,9 +135,7 @@ const ProfileCardComponent = ({
                 start();
             },
             toCenter() {
-                const shell = shellRef.current;
-                if (!shell) return;
-                this.setTarget(shell.clientWidth / 2, shell.clientHeight / 2);
+                this.setTarget(shellRectRef.current.width / 2, shellRectRef.current.height / 2);
             },
             beginInitial(durationMs) {
                 initialUntil = performance.now() + durationMs;
@@ -154,8 +153,8 @@ const ProfileCardComponent = ({
         };
     }, [enableTilt]);
 
-    const getOffsets = (evt, el) => {
-        const rect = el.getBoundingClientRect();
+    const getOffsets = (evt) => {
+        const rect = shellRectRef.current;
         return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
     };
 
@@ -163,7 +162,7 @@ const ProfileCardComponent = ({
         event => {
             const shell = shellRef.current;
             if (!shell || !tiltEngine) return;
-            const { x, y } = getOffsets(event, shell);
+            const { x, y } = getOffsets(event);
             tiltEngine.setTarget(x, y);
         },
         [tiltEngine]
@@ -181,7 +180,7 @@ const ProfileCardComponent = ({
                 shell.classList.remove('entering');
             }, ANIMATION_CONFIG.ENTER_TRANSITION_MS);
 
-            const { x, y } = getOffsets(event, shell);
+            const { x, y } = getOffsets(event);
             tiltEngine.setTarget(x, y);
         },
         [tiltEngine]
@@ -215,13 +214,13 @@ const ProfileCardComponent = ({
             const { beta, gamma } = event;
             if (beta == null || gamma == null) return;
 
-            const centerX = shell.clientWidth / 2;
-            const centerY = shell.clientHeight / 2;
-            const x = clamp(centerX + gamma * mobileTiltSensitivity, 0, shell.clientWidth);
+            const centerX = shellRectRef.current.width / 2;
+            const centerY = shellRectRef.current.height / 2;
+            const x = clamp(centerX + gamma * mobileTiltSensitivity, 0, shellRectRef.current.width);
             const y = clamp(
                 centerY + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
                 0,
-                shell.clientHeight
+                shellRectRef.current.height
             );
 
             tiltEngine.setTarget(x, y);
@@ -244,6 +243,24 @@ const ProfileCardComponent = ({
         shell.addEventListener('pointermove', pointerMoveHandler);
         shell.addEventListener('pointerleave', pointerLeaveHandler);
 
+        const updateRect = () => {
+            if (shell) {
+                const rect = shell.getBoundingClientRect();
+                shellRectRef.current = {
+                    width: rect.width || shell.clientWidth || 1,
+                    height: rect.height || shell.clientHeight || 1,
+                    left: rect.left,
+                    top: rect.top
+                };
+            }
+        };
+
+        const ro = new ResizeObserver(() => updateRect());
+        ro.observe(shell);
+        window.addEventListener('scroll', updateRect, { passive: true });
+        window.addEventListener('resize', updateRect, { passive: true });
+        updateRect();
+
         const handleClick = () => {
             if (!enableMobileTilt || location.protocol !== 'https:') return;
             const anyMotion = window.DeviceMotionEvent;
@@ -262,7 +279,7 @@ const ProfileCardComponent = ({
         };
         shell.addEventListener('click', handleClick);
 
-        const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+        const initialX = shellRectRef.current.width - ANIMATION_CONFIG.INITIAL_X_OFFSET;
         const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
         tiltEngine.setImmediate(initialX, initialY);
         tiltEngine.toCenter();
@@ -274,6 +291,9 @@ const ProfileCardComponent = ({
             shell.removeEventListener('pointerleave', pointerLeaveHandler);
             shell.removeEventListener('click', handleClick);
             window.removeEventListener('deviceorientation', deviceOrientationHandler);
+            window.removeEventListener('scroll', updateRect);
+            window.removeEventListener('resize', updateRect);
+            ro.disconnect();
             if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
             if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
             tiltEngine.cancel();

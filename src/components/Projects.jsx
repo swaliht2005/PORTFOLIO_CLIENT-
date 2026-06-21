@@ -63,12 +63,12 @@ const ProjectCard = ({ project, index }) => {
                     <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
                         <div className="flex gap-4">
                             {project.liveLink && (
-                                <a href={project.liveLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="Live Demo">
+                                <a href={project.liveLink} target="_blank" rel="noreferrer" aria-label="Live Demo" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="Live Demo">
                                     <FaExternalLinkAlt size={14} />
                                 </a>
                             )}
                             {project.repoLink && (
-                                <a href={project.repoLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="View Code">
+                                <a href={project.repoLink} target="_blank" rel="noreferrer" aria-label="View Code on GitHub" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="View Code">
                                     <FaGithub size={16} />
                                 </a>
                             )}

@@ -1,5 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 
 const LaserFlow = ({
