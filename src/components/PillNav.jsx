@@ -1,9 +1,11 @@
+<<<<<<< HEAD
 import React, { useRef, useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+=======
+import React, { useState } from 'react';
+>>>>>>> origin/main
 import { Link } from 'react-scroll';
-
-gsap.registerPlugin(useGSAP);
 
 const PillNav = ({
     logo,
@@ -11,6 +13,7 @@ const PillNav = ({
     items,
     activeHref,
     className,
+<<<<<<< HEAD
     ease = "power2.easeOut",
     baseColor = "rgba(255, 255, 255, 0.4)",
     pillColor = "#ffffff",
@@ -77,6 +80,16 @@ const PillNav = ({
             gsap.set(pillRef.current, { opacity: 0 });
         }
     }, [activeItem]);
+=======
+    baseColor = "#000000",
+    pillColor = "#ffffff",
+    pillTextColor = "#000000",
+    onMobileMenuClick,
+    mobileMenuOpen = false
+}) => {
+    const [hoveredItem, setHoveredItem] = useState(null);
+    const activeItem = items.findIndex(item => item.href === activeHref);
+>>>>>>> origin/main
 
     useLayoutEffect(() => {
         const updateMetrics = () => {
@@ -99,7 +112,7 @@ const PillNav = ({
     }, [activeItem, items.length]);
 
     return (
-        <nav className={`${className} flex items-center justify-between py-4 px-6 md:px-10`} ref={containerRef} style={{ color: baseColor }}>
+        <nav className={`${className} flex items-center justify-between py-4 px-6 md:px-10`} style={{ color: baseColor }} aria-label="Primary navigation">
             {/* Logo */}
             <div className="flex items-center">
                 {logo ? (
@@ -114,14 +127,7 @@ const PillNav = ({
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex relative items-center bg-white/5 backdrop-blur-sm rounded-full p-2 border border-white/10" onMouseLeave={handleMouseLeave}>
-                {/* The Pill */}
-                <div
-                    ref={pillRef}
-                    className="absolute top-2 bottom-2 bg-white rounded-full pointer-events-none z-0"
-                    style={{ backgroundColor: pillColor, height: 'calc(100% - 16px)' }}
-                />
-
+            <div className="hidden md:flex relative items-center gap-1 bg-white/5 backdrop-blur-sm rounded-full p-2 border border-white/10" onMouseLeave={() => setHoveredItem(null)}>
                 {items.map((item, index) => (
                     <Link
                         key={index}
@@ -130,26 +136,42 @@ const PillNav = ({
                         duration={500}
                         offset={-100}
                         spy={true}
+<<<<<<< HEAD
                         onSetActive={() => setActiveItem(index)}
                         className="relative z-10 px-6 py-2 text-sm font-medium cursor-pointer transition-colors duration-300"
 
                         ref={el => itemsRef.current[index] = el}
                         onMouseEnter={() => handleMouseEnter(index)}
                         style={{ color: activeItem === index ? hoveredPillTextColor : baseColor }}
+=======
+                        aria-current={activeItem === index ? 'page' : undefined}
+                        className="relative z-10 px-6 py-2 text-sm font-medium cursor-pointer rounded-full transition-[background-color,color,transform] duration-300"
+                        onMouseEnter={() => setHoveredItem(index)}
+                        style={{
+                            backgroundColor: hoveredItem === index || activeItem === index ? pillColor : 'transparent',
+                            color: hoveredItem === index || activeItem === index ? pillTextColor : baseColor
+                        }}
+>>>>>>> origin/main
                     >
-                        <span className="mix-blend-exclusion">{item.label}</span>
+                        <span>{item.label}</span>
                     </Link>
                 ))}
             </div>
 
             {/* Mobile Menu Trigger (Placeholder) */}
-            <div className="md:hidden" onClick={onMobileMenuClick}>
+            <button
+                type="button"
+                className="md:hidden text-current"
+                onClick={onMobileMenuClick}
+                aria-label="Open navigation menu"
+                aria-expanded={mobileMenuOpen}
+            >
                 <div className="space-y-2 cursor-pointer">
                     <div className="w-8 h-0.5 bg-current"></div>
                     <div className="w-8 h-0.5 bg-current"></div>
                     <div className="w-8 h-0.5 bg-current"></div>
                 </div>
-            </div>
+            </button>
         </nav>
     );
 };

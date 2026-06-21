@@ -1,13 +1,18 @@
-import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaBehance } from 'react-icons/fa';
+import { motion, useReducedMotion } from 'framer-motion';
+import { FaGithub, FaLinkedin, FaInstagram, FaBehance } from 'react-icons/fa';
+
+const MotionDiv = motion.div;
 
 const ModernProfileCard = ({ image }) => {
+    const shouldReduceMotion = useReducedMotion();
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        <MotionDiv
+            layout
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative group w-[300px] sm:w-[340px]"
+            transition={{ duration: shouldReduceMotion ? 0.01 : 0.5 }}
+            className="motion-transform relative group w-[300px] sm:w-[340px]"
         >
             {/* Animated Gradient Glow Effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#ffbd39] via-amber-400 to-[#ffbd39] rounded-2xl blur opacity-20 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
@@ -23,14 +28,17 @@ const ModernProfileCard = ({ image }) => {
 
                 {/* Profile Image Area */}
                 <div className="relative z-10 mt-4 mb-6">
-                    <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="relative w-44 h-44 rounded-full p-[3px] bg-gradient-to-tr from-[#ffbd39] to-amber-300"
+                    <MotionDiv
+                        layout
+                        whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
+                        className="motion-transform relative w-44 h-44 rounded-full p-[3px] bg-gradient-to-tr from-[#ffbd39] to-amber-300"
                     >
                         <div className="w-full h-full rounded-full overflow-hidden border-4 border-[#0c0c0c]">
                             <img
                                 src={image}
-                                alt="Profile"
+                                alt="Muhammed Swalih profile"
+                                loading="eager"
+                                decoding="async"
                                 className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                             />
                         </div>
@@ -38,7 +46,7 @@ const ModernProfileCard = ({ image }) => {
                         <div className="absolute bottom-3 right-3 w-6 h-6 bg-[#0c0c0c] rounded-full flex items-center justify-center">
                             <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-[#0c0c0c] animate-pulse"></div>
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
 
                 {/* Content */}
@@ -68,10 +76,11 @@ const ModernProfileCard = ({ image }) => {
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </MotionDiv>
     );
 };
 
+<<<<<<< HEAD
 const SocialLink = ({ Icon, href, label }) => (
     <a
         href={href}
@@ -83,5 +92,22 @@ const SocialLink = ({ Icon, href, label }) => (
         <Icon size={20} />
     </a>
 );
+=======
+const SocialLink = ({ Icon, href, label }) => {
+    const SocialIcon = Icon;
+
+    return (
+        <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-[#ffbd39] transform hover:scale-120 hover:-translate-y-1 transition-all duration-300 p-2 hover:bg-white/5 rounded-full"
+            aria-label={label}
+        >
+            <SocialIcon size={20} />
+        </a>
+    );
+};
+>>>>>>> origin/main
 
 export default ModernProfileCard;

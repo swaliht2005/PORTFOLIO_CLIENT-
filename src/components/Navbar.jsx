@@ -94,24 +94,33 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 import { Link as RouterLink } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import PillNav from './PillNav';
 
 import profileLogo from '../assets/swalih_profile.jpg';
+
+const MotionDiv = motion.div;
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
+    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
+        const sentinel = document.querySelector('[data-nav-sentinel]');
+        if (!sentinel || !('IntersectionObserver' in window)) {
+            return undefined;
+        }
 
-        window.addEventListener('scroll', handleScroll);
+        const observer = new IntersectionObserver(
+            ([entry]) => setScrolled(!entry.isIntersecting),
+            { rootMargin: '-50px 0px 0px 0px', threshold: 0 }
+        );
 
-        return () => window.removeEventListener('scroll', handleScroll);
+        observer.observe(sentinel);
+
+        return () => observer.disconnect();
     }, []);
 
     const navItems = [
@@ -123,9 +132,10 @@ const Navbar = () => {
 
     return (
         <>
+            <div data-nav-sentinel className="absolute top-0 h-px w-px" aria-hidden="true" />
             <PillNav
                 logo={
-                    <RouterLink to="/">
+                    <RouterLink to="/" aria-label="Go to home">
                         <div className="flex items-center gap-2">
                             <img
                                 src={profileLogo}
@@ -151,16 +161,21 @@ const Navbar = () => {
                 hoveredPillTextColor="#000000"
                 pillTextColor="#000000"
                 onMobileMenuClick={() => setIsOpen(!isOpen)}
+                mobileMenuOpen={isOpen}
             />
 
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="md:hidden fixed top-20 left-0 w-full bg-[#050505]/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 overflow-hidden"
+                    <MotionDiv
+                        layout
+                        initial={shouldReduceMotion ? false : { opacity: 0, y: -12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+                        transition={{ duration: shouldReduceMotion ? 0.01 : 0.25, ease: 'easeOut' }}
+                        className="motion-transform md:hidden fixed top-20 left-0 w-full bg-[#050505]/95 backdrop-blur-xl border-t border-white/10 shadow-2xl z-40 overflow-hidden"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Mobile navigation"
                     >
                         <div className="flex flex-col py-6 space-y-2">
                             {navItems.map((link) => (
@@ -172,6 +187,7 @@ const Navbar = () => {
                                     duration={500}
                                     onSetActive={(to) => setActiveSection(to)}
                                     onClick={() => setIsOpen(false)}
+                                    aria-current={activeSection === link.href ? 'page' : undefined}
                                     className={`py-4 px-8 text-lg font-medium transition-all border-l-4 ${
                                         activeSection === link.href
                                             ? 'border-[#ffbd39] text-[#ffbd39] bg-white/5'
@@ -182,7 +198,7 @@ const Navbar = () => {
                                 </Link>
                             ))}
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 )}
             </AnimatePresence>
         </>

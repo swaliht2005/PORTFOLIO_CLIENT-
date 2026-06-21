@@ -21,6 +21,17 @@ body {
     overflow-x: hidden;
 }
 
+.motion-transform {
+    will-change: transform, opacity;
+}
+
+.particle-container,
+.shine-effect,
+.hex-item,
+.hex-inner {
+    will-change: transform;
+}
+
 /* Watermark Text */
 .watermark-container {
     position: relative;
@@ -151,6 +162,29 @@ body {
     transform: translate(50%, 50%) rotate(45deg);
 }
 
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .motion-transform,
+    .particle-container,
+    .shine-effect,
+    .hex-item,
+    .hex-inner {
+        will-change: auto;
+    }
+
+    .shine-effect::before {
+        display: none;
+    }
+}
+
 /* React Quill Customization for Dark Theme Toolbar */
 .custom-quill .ql-toolbar {
     background-color: #1a1a1a !important;
@@ -185,4 +219,4 @@ body {
 
 .custom-quill .ql-editor {
     min-height: 200px;
-}
+}

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaGithub, FaExternalLinkAlt, FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -6,26 +6,31 @@ import { ParticleCard } from './MagicBento';
 import { useRef } from 'react';
 import ParticleBackground from './ParticleBackground';
 
+const MotionDiv = motion.div;
+
 const ProjectCard = ({ project, index }) => {
+    const shouldReduceMotion = useReducedMotion();
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
 
     return (
-        <motion.div
+        <MotionDiv
+            layout
             ref={ref}
-            initial={{ opacity: 0, y: 50 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="h-full"
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 50 }}
+            animate={inView || shouldReduceMotion ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, delay: shouldReduceMotion ? 0 : index * 0.1 }}
+            className="motion-transform h-full"
         >
             <ParticleCard
                 className="group relative bg-[#0e0e0e] rounded-xl overflow-hidden border border-white/5 hover:border-[#ffbd39]/50 transition-all duration-300 flex flex-col h-full shine-effect"
-                enableStars={true}
-                enableTilt={true}
-                enableMagnetism={true}
-                clickEffect={true}
+                disableAnimations={shouldReduceMotion}
+                enableStars={!shouldReduceMotion}
+                enableTilt={!shouldReduceMotion}
+                enableMagnetism={!shouldReduceMotion}
+                clickEffect={!shouldReduceMotion}
                 glowColor="255, 189, 57" // Gold theme RGB
             >
                 {/* Image Container */}
@@ -35,6 +40,8 @@ const ProjectCard = ({ project, index }) => {
                     <img
                         src={project.thumbnailUrl || project.imageUrl}
                         alt={project.title}
+                        loading={index > 1 ? 'lazy' : 'eager'}
+                        decoding="async"
                         className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
                     />
                 </Link>
@@ -63,12 +70,20 @@ const ProjectCard = ({ project, index }) => {
                     <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
                         <div className="flex gap-4">
                             {project.liveLink && (
+<<<<<<< HEAD
                                 <a href={project.liveLink} target="_blank" rel="noreferrer" aria-label="Live Demo" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="Live Demo">
+=======
+                                <a href={project.liveLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="Live Demo" aria-label={`Open live demo for ${project.title}`}>
+>>>>>>> origin/main
                                     <FaExternalLinkAlt size={14} />
                                 </a>
                             )}
                             {project.repoLink && (
+<<<<<<< HEAD
                                 <a href={project.repoLink} target="_blank" rel="noreferrer" aria-label="View Code on GitHub" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="View Code">
+=======
+                                <a href={project.repoLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="View Code" aria-label={`View code for ${project.title}`}>
+>>>>>>> origin/main
                                     <FaGithub size={16} />
                                 </a>
                             )}
@@ -80,7 +95,7 @@ const ProjectCard = ({ project, index }) => {
                     </div>
                 </div>
             </ParticleCard>
-        </motion.div>
+        </MotionDiv>
     );
 };
 

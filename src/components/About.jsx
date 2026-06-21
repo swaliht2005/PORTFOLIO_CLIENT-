@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import ParticleBackground from './ParticleBackground';
-import { 
+import {
     FaPalette, 
     FaFigma, 
     FaReact, 
@@ -12,7 +12,10 @@ import {
     FaProjectDiagram
 } from 'react-icons/fa';
 
+const MotionDiv = motion.div;
+
 const About = () => {
+    const shouldReduceMotion = useReducedMotion();
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -43,12 +46,20 @@ const About = () => {
 
                 <div className="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
                     {/* Bio Column */}
-                    <motion.div
+                    <MotionDiv
+                        layout
                         ref={ref}
+<<<<<<< HEAD
                         layout
                         initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -50 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.2 }}
+=======
+                        initial={shouldReduceMotion ? false : { opacity: 0, x: -50 }}
+                        animate={inView || shouldReduceMotion ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
+                        className="motion-transform"
+>>>>>>> origin/main
                     >
                         <h3 className="text-3xl font-bold text-white mb-6 leading-normal">
                             UI/UX Designer Bridging <br />
@@ -63,15 +74,24 @@ const About = () => {
                             Whether it's a web application, a mobile app, or a marketing site, I focus on aesthetics,
                             usability, and performance. Let's make something amazing together!
                         </p>
-                    </motion.div>
+                    </MotionDiv>
 
                     {/* Toolkit Column (Hex Grid) */}
+<<<<<<< HEAD
                     <motion.div
                         layout
                         initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 50 }}
                         animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.4 }}
                         className="bg-white/[0.02] backdrop-blur-md p-10 rounded-3xl border border-white/5 hover:border-[#ffbd39]/10 transition-all duration-500 relative overflow-hidden"
+=======
+                    <MotionDiv
+                        layout
+                        initial={shouldReduceMotion ? false : { opacity: 0, x: 50 }}
+                        animate={inView || shouldReduceMotion ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.4 }}
+                        className="motion-transform bg-white/[0.02] backdrop-blur-md p-10 rounded-3xl border border-white/5 hover:border-[#ffbd39]/10 transition-all duration-500 relative overflow-hidden"
+>>>>>>> origin/main
                     >
                         {/* Subtle gold glow behind grid */}
                         <div className="absolute -right-12 -top-12 -z-10 bg-[#ffbd39]/5 w-40 h-40 rounded-full blur-[40px]"></div>
@@ -92,7 +112,7 @@ const About = () => {
                                 </div>
                             ))}
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </div>
         </section>

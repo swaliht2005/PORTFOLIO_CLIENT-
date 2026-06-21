@@ -1,25 +1,29 @@
 import { useEffect, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { initParticlesEngine, Particles } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 
 const ParticleBackground = ({ className = "", id = "tsparticles" }) => {
     const [init, setInit] = useState(false);
+    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
+        if (shouldReduceMotion) return undefined;
+
         initParticlesEngine(async (engine) => {
             await loadSlim(engine);
         }).then(() => {
             setInit(true);
         });
-    }, []);
+    }, [shouldReduceMotion]);
 
     const particlesOptions = {
         background: { color: { value: "transparent" } },
-        fpsLimit: 120,
+        fpsLimit: 60,
         interactivity: {
             events: {
-                onClick: { enable: true, mode: "push" },
-                onHover: { enable: true, mode: "repulse" },
+                onClick: { enable: false },
+                onHover: { enable: !shouldReduceMotion, mode: "repulse" },
                 resize: true,
             },
             modes: {
@@ -44,8 +48,8 @@ const ParticleBackground = ({ className = "", id = "tsparticles" }) => {
                 speed: 1,
                 straight: false,
             },
-            number: { density: { enable: true, area: 800 }, value: 80 },
-            opacity: { value: 0.3 },
+            number: { density: { enable: true, area: 900 }, value: 32 },
+            opacity: { value: 0.22 },
             shape: { type: "circle" },
             size: { value: { min: 1, max: 3 } },
         },
@@ -55,7 +59,7 @@ const ParticleBackground = ({ className = "", id = "tsparticles" }) => {
     return (
         <div className={`absolute inset-0 z-0 overflow-hidden ${className}`}>
             {/* Background Particles */}
-            {init && (
+            {init && !shouldReduceMotion && (
                 <div className="absolute inset-0 z-0">
                     <Particles
                         id={id}
