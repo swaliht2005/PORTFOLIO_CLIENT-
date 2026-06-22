@@ -82,34 +82,17 @@ const Footer = () => {
     );
 };
 
-<<<<<<< HEAD
 const SocialLink = ({ Icon, href, label }) => (
     <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={label}
-        className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#ffbd39] hover:text-black hover:border-transparent hover:shadow-[0_0_15px_rgba(255,189,57,0.4)] transform hover:-translate-y-1 transition-all duration-300"
+        className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#ffbd39] hover:text-black hover:border-transparent hover:shadow-[0_0_15px_rgba(255,189,57,0.4)] transform hover:-translate-y-1 transition-all duration-300"
     >
         <Icon size={18} />
     </a>
 );
-=======
-const SocialLink = ({ Icon, href }) => {
-    const SocialIcon = Icon;
-
-    return (
-        <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#ffbd39] hover:text-black hover:border-transparent hover:shadow-[0_0_15px_rgba(255,189,57,0.4)] transform hover:-translate-y-1 transition-all duration-300"
-        >
-            <SocialIcon size={18} />
-        </a>
-    );
-};
->>>>>>> origin/main
 
 const FooterLink = ({ href, label }) => (
     <a href={href} className="text-gray-400 hover:text-[#ffbd39] transition-colors relative group">

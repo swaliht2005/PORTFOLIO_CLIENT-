@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
+import Magnetic from './Magnetic';
 
 const MotionDiv = motion.div;
 
@@ -44,23 +45,27 @@ const ContactCTA = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto">
-                        <a
-                            href="mailto:salumuhammadswalih@gmail.com"
-                            className="group flex items-center justify-center gap-2 bg-[#ffbd39] hover:bg-amber-400 text-black px-8 py-4 rounded-full font-bold text-sm tracking-wider uppercase transition-all duration-300 shadow-[0_0_20px_rgba(255,189,57,0.2)] hover:shadow-[0_0_35px_rgba(255,189,57,0.5)] transform hover:-translate-y-0.5 min-w-[200px]"
-                        >
-                            <Mail size={18} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
-                            <span>Send an Email</span>
-                        </a>
+                        <Magnetic>
+                            <a
+                                href="mailto:salumuhammadswalih@gmail.com"
+                                className="group flex items-center justify-center gap-2 bg-[#ffbd39] hover:bg-amber-400 text-black px-8 py-4 rounded-full font-bold text-sm tracking-wider uppercase transition-all duration-300 shadow-[0_0_20px_rgba(255,189,57,0.2)] hover:shadow-[0_0_35px_rgba(255,189,57,0.5)] min-w-[200px]"
+                            >
+                                <Mail size={18} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
+                                <span>Send an Email</span>
+                            </a>
+                        </Magnetic>
 
-                        <a
-                            href="https://wa.me/918095635402"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-[#ffbd39] border border-[#ffbd39]/30 hover:border-[#ffbd39]/70 px-8 py-4 rounded-full font-bold text-sm tracking-wider uppercase transition-all duration-300 transform hover:-translate-y-0.5 min-w-[200px]"
-                        >
-                            <FaWhatsapp size={18} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
-                            <span>Quick WhatsApp</span>
-                        </a>
+                        <Magnetic>
+                            <a
+                                href="https://wa.me/918095635402"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-[#ffbd39] border border-[#ffbd39]/30 hover:border-[#ffbd39]/70 px-8 py-4 rounded-full font-bold text-sm tracking-wider uppercase transition-all duration-300 min-w-[200px]"
+                            >
+                                <FaWhatsapp size={18} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
+                                <span>Quick WhatsApp</span>
+                            </a>
+                        </Magnetic>
                     </div>
                 </div>
             </MotionDiv>

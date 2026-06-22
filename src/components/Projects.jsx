@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ParticleCard } from './MagicBento';
 import { useRef } from 'react';
 import ParticleBackground from './ParticleBackground';
+import Magnetic from './Magnetic';
 
 const MotionDiv = motion.div;
 
@@ -70,20 +71,12 @@ const ProjectCard = ({ project, index }) => {
                     <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
                         <div className="flex gap-4">
                             {project.liveLink && (
-<<<<<<< HEAD
-                                <a href={project.liveLink} target="_blank" rel="noreferrer" aria-label="Live Demo" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="Live Demo">
-=======
                                 <a href={project.liveLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="Live Demo" aria-label={`Open live demo for ${project.title}`}>
->>>>>>> origin/main
                                     <FaExternalLinkAlt size={14} />
                                 </a>
                             )}
                             {project.repoLink && (
-<<<<<<< HEAD
-                                <a href={project.repoLink} target="_blank" rel="noreferrer" aria-label="View Code on GitHub" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="View Code">
-=======
                                 <a href={project.repoLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-[#ffbd39] transition-colors" title="View Code" aria-label={`View code for ${project.title}`}>
->>>>>>> origin/main
                                     <FaGithub size={16} />
                                 </a>
                             )}
@@ -123,9 +116,11 @@ const Projects = ({ projects, showViewMore = false }) => {
             {showViewMore && projects.length >= 6 && (
                 <div className="flex flex-wrap justify-center gap-4 mt-16 relative z-10">
                     <Link to="/projects">
-                        <button className="bg-[#ffbd39] hover:bg-amber-400 text-black font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,189,57,0.2)] hover:shadow-[0_0_35px_rgba(255,189,57,0.5)] transform hover:-translate-y-0.5">
-                            View More Projects
-                        </button>
+                        <Magnetic>
+                            <button className="bg-[#ffbd39] hover:bg-amber-400 text-black font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,189,57,0.2)] hover:shadow-[0_0_35px_rgba(255,189,57,0.5)]">
+                                View More Projects
+                            </button>
+                        </Magnetic>
                     </Link>
                 </div>
             )}

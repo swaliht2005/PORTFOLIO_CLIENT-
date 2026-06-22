@@ -12,7 +12,7 @@ const ModernProfileCard = ({ image }) => {
             initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: shouldReduceMotion ? 0.01 : 0.5 }}
-            className="motion-transform relative group w-[300px] sm:w-[340px]"
+            className="motion-transform relative group w-full max-w-[340px]"
         >
             {/* Animated Gradient Glow Effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#ffbd39] via-amber-400 to-[#ffbd39] rounded-2xl blur opacity-20 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
@@ -80,34 +80,16 @@ const ModernProfileCard = ({ image }) => {
     );
 };
 
-<<<<<<< HEAD
 const SocialLink = ({ Icon, href, label }) => (
     <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={label}
-        className="text-gray-400 hover:text-[#ffbd39] transform hover:scale-120 hover:-translate-y-1 transition-all duration-300 p-2 hover:bg-white/5 rounded-full"
+        className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-[#ffbd39] transform hover:scale-120 hover:-translate-y-1 transition-all duration-300 hover:bg-white/5 rounded-full"
     >
         <Icon size={20} />
     </a>
 );
-=======
-const SocialLink = ({ Icon, href, label }) => {
-    const SocialIcon = Icon;
-
-    return (
-        <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-[#ffbd39] transform hover:scale-120 hover:-translate-y-1 transition-all duration-300 p-2 hover:bg-white/5 rounded-full"
-            aria-label={label}
-        >
-            <SocialIcon size={20} />
-        </a>
-    );
-};
->>>>>>> origin/main
 
 export default ModernProfileCard;

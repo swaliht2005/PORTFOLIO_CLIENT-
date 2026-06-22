@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import React, { useRef, useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-=======
-import React, { useState } from 'react';
->>>>>>> origin/main
 import { Link } from 'react-scroll';
 
 const PillNav = ({
@@ -13,12 +9,13 @@ const PillNav = ({
     items,
     activeHref,
     className,
-<<<<<<< HEAD
     ease = "power2.easeOut",
     baseColor = "rgba(255, 255, 255, 0.4)",
     pillColor = "#ffffff",
     hoveredPillTextColor = "#000000",
-    onMobileMenuClick
+    pillTextColor = "#000000",
+    onMobileMenuClick,
+    mobileMenuOpen = false
 }) => {
     const containerRef = useRef(null);
     const pillRef = useRef(null);
@@ -55,7 +52,6 @@ const PillNav = ({
 
     const handleMouseEnter = (index) => {
         movePill(index);
-        // Animate text color if needed
     };
 
     const handleMouseLeave = () => {
@@ -69,7 +65,6 @@ const PillNav = ({
     // Initial positioning
     useLayoutEffect(() => {
         if (activeItem !== null && itemMetricsRef.current[activeItem]) {
-            // Immediate set for initial load
             const metrics = itemMetricsRef.current[activeItem];
             gsap.set(pillRef.current, {
                 x: metrics.offsetLeft,
@@ -80,16 +75,6 @@ const PillNav = ({
             gsap.set(pillRef.current, { opacity: 0 });
         }
     }, [activeItem]);
-=======
-    baseColor = "#000000",
-    pillColor = "#ffffff",
-    pillTextColor = "#000000",
-    onMobileMenuClick,
-    mobileMenuOpen = false
-}) => {
-    const [hoveredItem, setHoveredItem] = useState(null);
-    const activeItem = items.findIndex(item => item.href === activeHref);
->>>>>>> origin/main
 
     useLayoutEffect(() => {
         const updateMetrics = () => {
@@ -127,7 +112,18 @@ const PillNav = ({
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex relative items-center gap-1 bg-white/5 backdrop-blur-sm rounded-full p-2 border border-white/10" onMouseLeave={() => setHoveredItem(null)}>
+            <div 
+                ref={containerRef}
+                className="hidden md:flex relative items-center gap-1 bg-white/5 backdrop-blur-sm rounded-full p-2 border border-white/10" 
+                onMouseLeave={handleMouseLeave}
+            >
+                {/* Moving Pill Background */}
+                <div 
+                    ref={pillRef} 
+                    className="absolute top-2 bottom-2 left-0 rounded-full" 
+                    style={{ backgroundColor: pillColor, pointerEvents: 'none', zIndex: 0 }} 
+                />
+
                 {items.map((item, index) => (
                     <Link
                         key={index}
@@ -136,22 +132,11 @@ const PillNav = ({
                         duration={500}
                         offset={-100}
                         spy={true}
-<<<<<<< HEAD
                         onSetActive={() => setActiveItem(index)}
-                        className="relative z-10 px-6 py-2 text-sm font-medium cursor-pointer transition-colors duration-300"
-
+                        className="relative z-10 px-6 py-2 text-sm font-medium cursor-pointer transition-colors duration-300 rounded-full"
                         ref={el => itemsRef.current[index] = el}
                         onMouseEnter={() => handleMouseEnter(index)}
                         style={{ color: activeItem === index ? hoveredPillTextColor : baseColor }}
-=======
-                        aria-current={activeItem === index ? 'page' : undefined}
-                        className="relative z-10 px-6 py-2 text-sm font-medium cursor-pointer rounded-full transition-[background-color,color,transform] duration-300"
-                        onMouseEnter={() => setHoveredItem(index)}
-                        style={{
-                            backgroundColor: hoveredItem === index || activeItem === index ? pillColor : 'transparent',
-                            color: hoveredItem === index || activeItem === index ? pillTextColor : baseColor
-                        }}
->>>>>>> origin/main
                     >
                         <span>{item.label}</span>
                     </Link>

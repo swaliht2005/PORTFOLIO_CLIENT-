@@ -20,7 +20,6 @@ const About = () => {
         triggerOnce: true,
         threshold: 0.1,
     });
-    const shouldReduceMotion = useReducedMotion();
 
     const skills = [
         { name: "UI/UX", icon: FaPalette },
@@ -49,19 +48,12 @@ const About = () => {
                     <MotionDiv
                         layout
                         ref={ref}
-<<<<<<< HEAD
-                        layout
-                        initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -50 }}
-                        animate={inView ? { opacity: 1, x: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-=======
                         initial={shouldReduceMotion ? false : { opacity: 0, x: -50 }}
                         animate={inView || shouldReduceMotion ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
                         className="motion-transform"
->>>>>>> origin/main
                     >
-                        <h3 className="text-3xl font-bold text-white mb-6 leading-normal">
+                        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6 leading-normal">
                             UI/UX Designer Bridging <br />
                             <span className="text-[#ffbd39] filter drop-shadow-[0_0_10px_rgba(255,189,57,0.2)]">Design & Development</span>
                         </h3>
@@ -77,26 +69,17 @@ const About = () => {
                     </MotionDiv>
 
                     {/* Toolkit Column (Hex Grid) */}
-<<<<<<< HEAD
-                    <motion.div
-                        layout
-                        initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 50 }}
-                        animate={inView ? { opacity: 1, x: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                        className="bg-white/[0.02] backdrop-blur-md p-10 rounded-3xl border border-white/5 hover:border-[#ffbd39]/10 transition-all duration-500 relative overflow-hidden"
-=======
                     <MotionDiv
                         layout
                         initial={shouldReduceMotion ? false : { opacity: 0, x: 50 }}
                         animate={inView || shouldReduceMotion ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : 0.4 }}
-                        className="motion-transform bg-white/[0.02] backdrop-blur-md p-10 rounded-3xl border border-white/5 hover:border-[#ffbd39]/10 transition-all duration-500 relative overflow-hidden"
->>>>>>> origin/main
+                        className="motion-transform bg-white/[0.02] backdrop-blur-md p-6 sm:p-10 rounded-3xl border border-white/5 hover:border-[#ffbd39]/10 transition-all duration-500 relative overflow-hidden"
                     >
                         {/* Subtle gold glow behind grid */}
                         <div className="absolute -right-12 -top-12 -z-10 bg-[#ffbd39]/5 w-40 h-40 rounded-full blur-[40px]"></div>
 
-                        <h4 className="text-xl font-bold text-white mb-10 text-center uppercase tracking-widest text-[#ffbd39]">
+                        <h4 className="text-lg sm:text-xl font-bold text-white mb-10 text-center uppercase tracking-widest text-[#ffbd39]">
                             My Tech Toolkit
                         </h4>
 
